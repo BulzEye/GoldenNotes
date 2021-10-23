@@ -1,0 +1,1 @@
+# GoldenNotes - a note-taking app
