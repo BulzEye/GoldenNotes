@@ -1,3 +1,13 @@
+:root {
+  --heading-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -10,4 +20,111 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* Header */
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 4vw;
+  background-color: #6b00b3;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin: 0px;
+  color: white;
+}
+
+button {
+  background-color: #f3e6ff;
+  font-family: var(--heading-font);
+  border: 0px;
+  padding: 10px;
+  font-weight: 500;
+}
+
+button:hover {
+  background-color: #ce99ff;
+}
+
+button:active {
+  background-color: #a64dff;
+}
+
+/* Error section */
+
+div.error {
+  width: 100%;
+  padding: 10px 4vw;
+  background-color: #ff1a1a;
+  /* border: 2px solid #ff0000; */
+}
+
+/* Body */
+
+body {
+  background-color: #f3e6ff;
+}
+
+div.noteBody {
+  display: flex;
+  /* justify-content: space-around; */
+  padding: 2vw;
+}
+
+/* Note snippet */
+
+div.note {
+  border: 2px solid #ff9933;
+  background-color: #ffd9b3;
+  border-radius: 10px;
+  width: 20%;
+  margin: 2vw;
+  padding: 20px;
+}
+
+/* Note editing modal */
+
+div.editNote {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background-color: rgba(0, 0, 0, 0.4);
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div.modal {
+  width: 40%;
+  margin: auto;
+  border: 2px solid black;
+  border-radius: 10px;
+  background-color: white;
+  padding: 20px;
+}
+
+div.modalHead {
+  display: flex;
+  justify-content: space-between;
+}
+
+div.modalHead input[type=text] {
+  padding: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+div.modalBody textarea {
+  resize: none;
+  width: 100%;
+  display: block;
+  margin: 15px 0px;
+  padding: 10px;
+  font-size: 1.2rem;
 }
