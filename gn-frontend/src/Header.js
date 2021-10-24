@@ -1,8 +1,11 @@
-const Header = () => {
+import { Link } from "react-router-dom";
+
+const Header = (props) => {
     return ( 
         <header>
             <h1>GoldenNotes</h1>
-            <button>New Note</button>
+            <Link to="/editnote"><button>New Note</button></Link>
+            {/* onClick={() => {props.buttonFunction(true)}} */}
         </header>
     );
 }
