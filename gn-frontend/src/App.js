@@ -27,12 +27,25 @@ function App() {
 
   useEffect(() => {
     fetch("/getNotes/")
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
+      .then(res => {
+        // console.log("Response: " + res);
+        return res.json();
       })
-      .catch(err => {console.log("ERROR: " + err);});
-  }, [])
+      .then(data => {
+        // console.log(data);
+        setNotes(data);
+      })
+      .catch(err => {console.log("ERROR in fetching: " + err);});
+  }, []);
+
+  // let testFetch = () => {
+  //   fetch("http://localhost:3001/getNotes/")
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       console.log(data);
+  //     })
+  //     .catch(err => {console.log("ERROR: " + err);});
+  // };
 
   return (
     // Header section
@@ -50,12 +63,16 @@ function App() {
         </div>
 
         <Switch>
-          <Route path="/editnote">
-            <EditNote closeFunction={editMode}/>
+          <Route exact path="/editnote">
+            <EditNote isNewNote={false} closeFunction={editMode}/>
+          </Route>
+          <Route exact path="/addnote">
+            <EditNote isNewNote={true} closeFunction={editMode}/>
           </Route>
         </Switch>
-        {editNote && <EditNote closeFunction={editMode}/>}
+        {/* {editNote && <EditNote closeFunction={editMode}/>} */}
       </div>
+      {/* <button onClick={testFetch}>Test</button> */}
     </Router>
 
   );
