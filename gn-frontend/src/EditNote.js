@@ -1,15 +1,45 @@
-import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
 
 const EditNote = (props) => {
 
+    const { id } = useParams();
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
     const history = useHistory();
 
+    useEffect(() => {
+        fetch(`/note/${id}`)
+            .then((res) => res.json())
+            .then((note) => {
+                setTitle(note.title);
+                setBody(note.body);
+            })
+            .catch((err) => {
+                console.log("ERROR in fetching note: " + err);
+            });
+    }, []);
+
+    // console.log(`id: ${id}`);
+
     let handleSubmit = (event) => {
         event.preventDefault();
-        if(!(title === "" && body === "")) {
+        if(id) {
+            const updatedNote = { id, note: { title, body }};
+            fetch("/modifynote", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(updatedNote)
+            })
+            .then(() => {
+                console.log("Updated note");
+                history.push("/");
+            })
+            .catch((err) => {
+                console.log("ERROR updating note: " + err);
+            });
+        }
+        else if(!(title === "" && body === "")) {
             const newNote = { title, body };
             fetch("/addnote", {
                 method: "POST",

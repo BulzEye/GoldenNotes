@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const Header = (props) => {
+const Header = () => {
     return ( 
         <header>
             <h1>GoldenNotes</h1>

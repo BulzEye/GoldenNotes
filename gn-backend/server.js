@@ -45,7 +45,20 @@ app.get("/getNotes/", (req, res) => {
         })
         .catch((err) => {
             console.log("ERROR in displaying notes");
+            res.status(404).send("Could not find notes");
         })
+});
+
+app.get("/note/:id", (req, res) => {
+    const id = req.params.id;
+    Note.findById(id)
+    .then(note => {
+        res.json(note);
+    })
+    .catch(err => {
+        console.log("ERROR in displaying notes");
+        res.status(404).send("Could not find note");
+    })
 });
 
 app.post("/addnote", (req, res) => {
@@ -60,4 +73,14 @@ app.post("/addnote", (req, res) => {
         console.log("ERROR in saving note: " + err);
     });
     
+});
+
+app.post("/modifynote", (req, res) => {
+    Note.findByIdAndUpdate(req.body.id, req.body.note)
+    .then((result) => {
+        res.redirect("/");
+    })
+    .catch((err) => {
+        console.log("ERROR in saving note: " + err);
+    });
 });
