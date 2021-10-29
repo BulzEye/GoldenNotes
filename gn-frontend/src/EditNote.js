@@ -61,8 +61,8 @@ const EditNote = (props) => {
     }
     
     return ( 
-        <div className="editNote">
-            <div className="modal">
+        <div className="editNote" onClick={() => {history.push("/");}}>
+            <div className="modal" onClick={(e) => {e.stopPropagation();}}>
                 <form onSubmit={handleSubmit}>
                     <div className="modalHead">
                         <input type="text" name="title" id="editTitle" value={title} onChange={(e) => setTitle(e.target.value)}/>
