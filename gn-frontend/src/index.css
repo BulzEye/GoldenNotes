@@ -131,3 +131,8 @@ div.modalBody textarea {
   padding: 10px;
   font-size: 1.2rem;
 }
+
+div.modalBottom {
+  display: flex;
+  justify-content: space-between;
+}

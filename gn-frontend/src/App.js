@@ -20,6 +20,7 @@ function App() {
   // ];
   // const [editNote, setEditNote] = useState(false);
   const [notes, setNotes] = useState([]);
+  const [dependencies, setDependencies] = useState(false);
 
   // const editMode = (isEditMode) => {
   //   setEditNote(isEditMode);
@@ -34,9 +35,10 @@ function App() {
       .then(data => {
         // console.log(data);
         setNotes(data);
+        setDependencies(false);
       })
       .catch(err => {console.log("ERROR in fetching: " + err);});
-  }, []);
+  }, [dependencies]);
 
   // let testFetch = () => {
   //   fetch("http://localhost:3001/getNotes/")
@@ -64,10 +66,10 @@ function App() {
 
         <Switch>
           <Route exact path="/editnote">
-            <EditNote isNewNote={true} />
+            <EditNote isNewNote={true} setDependencies={setDependencies}/>
           </Route>
           <Route exact path="/editnote/:id">
-            <EditNote isNewNote={false} />
+            <EditNote isNewNote={false} setDependencies={setDependencies}/>
           </Route>
         </Switch>
         {/* {editNote && <EditNote closeFunction={editMode}/>} */}

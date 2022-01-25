@@ -84,3 +84,14 @@ app.post("/modifynote", (req, res) => {
         console.log("ERROR in saving note: " + err);
     });
 });
+
+app.delete("/deletenote/:id", (req, res) => {
+    const id = req.params.id;
+    Note.findByIdAndDelete(id)
+    .then((result) => {
+        res.json({success: true});
+    })
+    .catch((err) => {
+        console.log("ERROR in deleting note: " + err);
+    });
+})

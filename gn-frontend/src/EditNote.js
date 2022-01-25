@@ -33,7 +33,8 @@ const EditNote = (props) => {
             })
             .then(() => {
                 console.log("Updated note");
-                history.push("/");
+                props.setDependencies(true); // to force reload of home page
+                history.push("/"); 
             })
             .catch((err) => {
                 console.log("ERROR updating note: " + err);
@@ -48,6 +49,7 @@ const EditNote = (props) => {
             })
             .then(() => {
                 console.log("Added new note");
+                props.setDependencies(true); // to force reload of home page
                 history.push("/");
             })
             .catch((err) => {
@@ -57,7 +59,29 @@ const EditNote = (props) => {
         else {
             history.push("/");
         }
-
+        
+    }
+    
+    let deleteNote = (event) => {
+        event.stopPropagation();
+        event.preventDefault();
+        if(!id) {
+            history.push("/");
+        }
+        else if(window.confirm("Do you want to delete this note?")) {
+            console.log("true");
+            fetch(`/deletenote/${id}`, {
+                method: "DELETE",
+            })
+            .then(() => {
+                console.log("Deleted note");
+                props.setDependencies(true); // to force reload of home page
+                history.push("/");
+            })
+            .catch((err) => {
+                console.log("ERROR deleting note: " + err);
+            });
+        }
     }
     
     return ( 
@@ -66,12 +90,15 @@ const EditNote = (props) => {
                 <form onSubmit={handleSubmit}>
                     <div className="modalHead">
                         <input type="text" name="title" id="editTitle" value={title} onChange={(e) => setTitle(e.target.value)}/>
-                        <button onClick={() => {history.push("/");}}>Close</button>
+                        <button onClick={(e) => {e.preventDefault(); history.push("/");}}>Close</button>
                         {/* onClick={() => {props.closeFunction(false)}} */}
                     </div>
                     <div className="modalBody">
                         <textarea name="body" id="editBody" style={{}} value={body} onChange={(e) => setBody(e.target.value)}></textarea>
+                    </div>
+                    <div className="modalBottom">
                         <button type="submit">Submit</button>
+                        <button onClick={deleteNote}>Delete</button>
                     </div>
                 </form>
             </div>
