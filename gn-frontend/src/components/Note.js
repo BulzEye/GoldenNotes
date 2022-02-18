@@ -1,4 +1,5 @@
 import { Link, useHistory } from "react-router-dom";
+import "./Note.css";
 
 const Note = (props) => {
     const history = useHistory();

@@ -1,0 +1,11 @@
+/* Note snippet */
+
+div.note {
+    border: 2px solid #ff9933;
+    background-color: #ffd9b3;
+    border-radius: 10px;
+    width: 20vw;
+    margin: 2vw 0px;
+    padding: 20px;
+    cursor: pointer;
+}

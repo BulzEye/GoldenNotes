@@ -1,0 +1,48 @@
+/* Note editing modal */
+
+div.editNote {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background-color: rgba(0, 0, 0, 0.4);
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.modal {
+    width: 40%;
+    margin: auto;
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: white;
+    padding: 20px;
+}
+
+div.modalHead {
+    display: flex;
+    justify-content: space-between;
+}
+
+div.modalHead input[type=text] {
+    padding: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+div.modalBody textarea {
+    resize: none;
+    width: 100%;
+    display: block;
+    margin: 15px 0px;
+    padding: 10px;
+    font-size: 1.2rem;
+}
+
+div.modalBottom {
+    display: flex;
+    justify-content: space-between;
+}
+  
