@@ -14,12 +14,14 @@ h1 {
     color: white;
 }
 
-button {
+button.newNote {
     background-color: #f3e6ff;
     font-family: var(--heading-font);
     border: 0px;
-    padding: 10px;
+    padding: 10px 15px;
     font-weight: 500;
+    border-radius: 3px;
+    transition: background-color 0.1s;
 }
 
 button:hover {

@@ -1,24 +1,35 @@
 import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
+import "./EditNote.css";
 
 const EditNote = (props) => {
 
     const { id } = useParams();
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
+    const [isLoading, setIsLoading] = useState(true);
     const history = useHistory();
 
+    // console.log("ID: ");
+    // console.log(id);
     useEffect(() => {
-        fetch(`/note/${id}`)
-            .then((res) => res.json())
-            .then((note) => {
-                setTitle(note.title);
-                setBody(note.body);
-            })
-            .catch((err) => {
-                console.log("ERROR in fetching note: " + err);
-            });
+        if(id) {
+            fetch(`/note/${id}`)
+                .then((res) => res.json())
+                .then((note) => {
+                    setTitle(note.title);
+                    setBody(note.body);
+                    setIsLoading(false);
+                })
+                .catch((err) => {
+                    console.log("ERROR in fetching note: " + err);
+                });
+        }
+        else {
+            setIsLoading(false);
+        }
     }, []);
+    
 
     // console.log(`id: ${id}`);
 
@@ -86,22 +97,25 @@ const EditNote = (props) => {
     
     return ( 
         <div className="editNote" onClick={() => {history.push("/");}}>
-            <div className="modal" onClick={(e) => {e.stopPropagation();}}>
-                <form onSubmit={handleSubmit}>
-                    <div className="modalHead">
-                        <input type="text" name="title" id="editTitle" value={title} onChange={(e) => setTitle(e.target.value)}/>
-                        <button onClick={(e) => {e.preventDefault(); history.push("/");}}>Close</button>
-                        {/* onClick={() => {props.closeFunction(false)}} */}
-                    </div>
-                    <div className="modalBody">
-                        <textarea name="body" id="editBody" style={{}} value={body} onChange={(e) => setBody(e.target.value)}></textarea>
-                    </div>
-                    <div className="modalBottom">
-                        <button type="submit">Submit</button>
-                        <button onClick={deleteNote}>Delete</button>
-                    </div>
-                </form>
-            </div>
+            {!isLoading ?
+                <div className="modal" onClick={(e) => {e.stopPropagation();}}>
+                    <form onSubmit={handleSubmit}>
+                        <div className="modalHead">
+                            <input type="text" name="title" id="editTitle" value={title} onChange={(e) => setTitle(e.target.value)}/>
+                            <button onClick={(e) => {e.preventDefault(); history.push("/");}}>Close</button>
+                            {/* onClick={() => {props.closeFunction(false)}} */}
+                        </div>
+                        <div className="modalBody">
+                            <textarea name="body" id="editBody" style={{}} value={body} onChange={(e) => setBody(e.target.value)}></textarea>
+                        </div>
+                        <div className="modalBottom">
+                            <button type="submit">Submit</button>
+                            <button onClick={deleteNote}>Delete</button>
+                        </div>
+                    </form>
+                </div> : ""
+            }
+            
         </div>
      );
 }

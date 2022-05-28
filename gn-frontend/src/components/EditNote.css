@@ -4,12 +4,22 @@ div.editNote {
     position: fixed;
     top: 0px;
     left: 0px;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.5);
     width: 100vw;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    animation: loadModalBackground 0.3s;
+}
+
+@keyframes loadModalBackground {
+    0% {
+        background-color: rgba(0, 0, 0, 0);
+    }
+    100% {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
 }
 
 div.modal {
@@ -19,6 +29,16 @@ div.modal {
     border-radius: 10px;
     background-color: white;
     padding: 20px;
+    animation: loadModal 0.1s;
+}
+
+@keyframes loadModal {
+    0% {
+        display: none;
+    }
+    100% {
+        display: block;
+    }
 }
 
 div.modalHead {
