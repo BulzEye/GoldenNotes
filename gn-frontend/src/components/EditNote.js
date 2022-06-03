@@ -102,15 +102,15 @@ const EditNote = (props) => {
                     <form onSubmit={handleSubmit}>
                         <div className="modalHead">
                             <input type="text" name="title" id="editTitle" value={title} onChange={(e) => setTitle(e.target.value)}/>
-                            <button onClick={(e) => {e.preventDefault(); history.push("/");}}>Close</button>
+                            <button onClick={(e) => {e.preventDefault(); history.push("/");}}><i className="bi-x"></i></button>
                             {/* onClick={() => {props.closeFunction(false)}} */}
                         </div>
                         <div className="modalBody">
                             <textarea name="body" id="editBody" style={{}} value={body} onChange={(e) => setBody(e.target.value)}></textarea>
                         </div>
                         <div className="modalBottom">
-                            <button type="submit">Submit</button>
-                            <button onClick={deleteNote}>Delete</button>
+                            <button type="submit" className="submit">Submit</button>
+                            <button onClick={deleteNote} className="delete"><i className="bi bi-trash3"></i></button>
                         </div>
                     </form>
                 </div> : ""

@@ -27,7 +27,8 @@ div.modal {
     margin: auto;
     border: 2px solid black;
     border-radius: 10px;
-    background-color: white;
+    /* background-color: white; */
+    background-color: #ffd9b3;
     padding: 20px;
     animation: loadModal 0.1s;
 }
@@ -50,19 +51,60 @@ div.modalHead input[type=text] {
     padding: 10px;
     font-size: 1.2rem;
     font-weight: bold;
+    background-color: #ffd9b3;
+    border: none;
+}
+
+div.modal button {
+    background-color: #ffd9b3;
+    border: none;
+    border-radius: 50%;
+}
+
+div.modal button:hover {
+    background-color: #ffbf80;
+    cursor: pointer;
+}
+
+div.modal button i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* font-weight: bold; */
+}
+
+div.modalHead button i {
+    font-size: 2rem;
 }
 
 div.modalBody textarea {
     resize: none;
     width: 100%;
     display: block;
-    margin: 15px 0px;
+    margin: 0px 0px 15px;
     padding: 10px;
     font-size: 1.2rem;
+    border: none;
+    font-family: 'Open Sans', serif;
+    background-color: #ffd9b3;
 }
 
 div.modalBottom {
     display: flex;
     justify-content: space-between;
 }
-  
+
+div.modalBottom button.submit {
+    padding: 10px;
+    font-size: 1.2rem;
+    border-radius: 0px;
+}
+
+div.modalBottom button.delete {
+    width: 44px;
+    padding: auto;
+}
+
+div.modalBottom button i {
+    font-size: 1.25rem;
+}
