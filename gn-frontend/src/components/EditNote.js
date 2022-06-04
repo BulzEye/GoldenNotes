@@ -101,7 +101,7 @@ const EditNote = (props) => {
                 <div className="modal" onClick={(e) => {e.stopPropagation();}}>
                     <form onSubmit={handleSubmit}>
                         <div className="modalHead">
-                            <input type="text" name="title" id="editTitle" value={title} placeholder="Enter heading" onChange={(e) => setTitle(e.target.value)}/>
+                            <input type="text" name="title" id="editTitle" value={title} placeholder="Enter title" onChange={(e) => setTitle(e.target.value)}/>
                             <button onClick={(e) => {e.preventDefault(); history.push("/");}}><i className="bi-x"></i></button>
                             {/* onClick={() => {props.closeFunction(false)}} */}
                         </div>
