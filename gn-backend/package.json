@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "node server.js",
+    "devstart": "concurrently \"npm run server\" \"npm run client\"",
     "server": "nodemon server.js",
     "client": "node start-client.js"
   },
@@ -26,5 +27,8 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "mongoose": "^6.0.12"
+  },
+  "engines": {
+    "node": "16.x"
   }
 }

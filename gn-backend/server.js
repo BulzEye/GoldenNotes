@@ -21,8 +21,8 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true})
 let notes = require("./testData/testNotes.js");
 console.log(`Notes: ${notes}`);
 
-app.listen(3001, () => {
-    console.log("App listening on port 3001");
+app.listen(process.env.PORT || 3001, () => {
+    console.log(`App listening on port ${process.env.PORT || 3001}`);
 });
 
 app.get("/", (req, res) => {
