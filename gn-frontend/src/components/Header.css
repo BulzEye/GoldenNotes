@@ -4,12 +4,12 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 4vw;
+    padding: 20px var(--x-padding);
     background-color: #6b00b3;
 }
 
 h1 {
-    font-size: 1.5rem;
+    font-size: 2rem;
     margin: 0px;
     color: white;
 }

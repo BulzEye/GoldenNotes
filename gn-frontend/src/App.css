@@ -8,6 +8,10 @@
   font-family: 'Open Sans', sans-serif;
 }
 
+:root {
+  --x-padding: 4vw;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -41,12 +45,4 @@
   to {
     transform: rotate(360deg);
   }
-}
-
-div.noteBody {
-  display: grid;
-  grid-template-columns: auto auto auto auto;
-  justify-content: space-between;
-  /* justify-content: space-around; */
-  padding: 2vw 4vw;
 }

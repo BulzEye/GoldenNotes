@@ -6,6 +6,7 @@ import EditNote from './components/EditNote';
 import ErrorDisplay from './components/ErrorDisplay';
 import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import HomeBody from './components/HomeBody';
 
 function App() {
   // const notesTest = [
@@ -55,14 +56,7 @@ function App() {
       <div className="app">
         <Header />
         {/* <ErrorDisplay /> */}
-        <div className="noteBody">
-          { notes.map((note) => (
-            <Note key={note._id} content={note} />
-            )) 
-          }
-          {/* <Note /> */}
-
-        </div>
+        <HomeBody notes={notes}/>
 
         <Switch>
           <Route exact path="/editnote">

@@ -1,0 +1,36 @@
+div.noteBody {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    justify-content: space-between;
+    /* justify-content: space-around; */
+    padding: 2vw var(--x-padding);
+}
+
+div.newNote {
+    font-size: 1.25rem;
+    border-radius: 50%;
+    height: 60px;
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FF8C1A;
+    color: white;
+    border: 1px solid #FF8C1A;
+    transition: 0.2s background-color, 0.2s color;
+    position: absolute;
+    bottom: var(--x-padding);
+    right: var(--x-padding);
+}
+/* 
+div.newNote a {
+    color: white;
+    transition: ;
+} */
+
+div.newNote:hover {
+    background-color: #ffd9b3;
+    border: 1px solid #FF8C1A;
+    cursor: pointer;
+    color: #FF8C1A;
+}
