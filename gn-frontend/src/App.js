@@ -27,7 +27,7 @@ function App() {
   // }
 
   useEffect(() => {
-    fetch("/getNotes/")
+    fetch(`${process.env.REACT_APP_API_URL || ""}/getNotes/`)
       .then(res => {
         // console.log("Response: " + res);
         return res.json();

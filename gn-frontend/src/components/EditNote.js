@@ -14,7 +14,7 @@ const EditNote = (props) => {
     // console.log(id);
     useEffect(() => {
         if(id) {
-            fetch(`/note/${id}`)
+            fetch(`${process.env.REACT_APP_API_URL || ""}/note/${id}`)
                 .then((res) => res.json())
                 .then((note) => {
                     setTitle(note.title);
@@ -37,7 +37,7 @@ const EditNote = (props) => {
         event.preventDefault();
         if(id) {
             const updatedNote = { id, note: { title, body }};
-            fetch("/modifynote", {
+            fetch(`${process.env.REACT_APP_API_URL || ""}/modifynote`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updatedNote)
@@ -53,7 +53,7 @@ const EditNote = (props) => {
         }
         else if(!(title === "" && body === "")) {
             const newNote = { title, body };
-            fetch("/addnote", {
+            fetch(`${process.env.REACT_APP_API_URL || ""}/addnote`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(newNote)
@@ -81,7 +81,7 @@ const EditNote = (props) => {
         }
         else if(window.confirm("Do you want to delete this note?")) {
             console.log("true");
-            fetch(`/deletenote/${id}`, {
+            fetch(`${process.env.REACT_APP_API_URL || ""}/deletenote/${id}`, {
                 method: "DELETE",
             })
             .then(() => {
