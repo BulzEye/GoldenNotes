@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 const apiRoutes = require("./routes/apiRoutes");
 
@@ -8,6 +9,13 @@ require("dotenv").config();
 const app = express();
 
 app.use(express.json());
+
+var corsOptions = {
+    origin: 'https://goldennotes.netlify.com',
+    optionsSuccessStatus: 200 // For legacy browser support
+}
+
+app.use(cors(corsOptions));
 
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true})
