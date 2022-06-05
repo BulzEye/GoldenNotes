@@ -28,7 +28,7 @@ const EditNote = (props) => {
         else {
             setIsLoading(false);
         }
-    }, []);
+    }, [id]);
     
 
     // console.log(`id: ${id}`);

@@ -1,9 +1,8 @@
-import logo from './logo.svg';
 import './App.css';
 import Header from './components/Header';
-import Note from './components/Note';
+// import Note from './components/Note';
 import EditNote from './components/EditNote';
-import ErrorDisplay from './components/ErrorDisplay';
+// import ErrorDisplay from './components/ErrorDisplay';
 import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import HomeBody from './components/HomeBody';
