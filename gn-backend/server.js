@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json());
 
 var corsOptions = {
-    origin: 'https://goldennotes.netlify.com',
+    origin: 'https://goldennotes.netlify.app',
     optionsSuccessStatus: 200 // For legacy browser support
 }
 
