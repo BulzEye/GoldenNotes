@@ -12,7 +12,8 @@ app.use(express.json());
 
 var corsOptions = {
     origin: 'https://goldennotes.netlify.app',
-    optionsSuccessStatus: 200 // For legacy browser support
+    optionsSuccessStatus: 200, // For legacy browser support
+    methods: "GET, POST, DELETE"
 }
 
 app.use(cors(corsOptions));
