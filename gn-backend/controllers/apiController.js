@@ -25,7 +25,7 @@ const note_ID_get = (req, res) => {
 };
 
 const note_add_post = (req, res) => {
-    // console.log(req.body);
+    console.log(req.body);
     const note = new Note(req.body);
 
     note.save()
