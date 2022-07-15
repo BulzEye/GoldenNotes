@@ -10,6 +10,7 @@ const HomeBody = (props) => {
             ))
             }
             {/* <Note /> */}
+            {/* New note button (on bottom right) */}
             <Link to={"/editnote"}>
                 <div className="newNote">
                     <i class="bi bi-pen"></i>
