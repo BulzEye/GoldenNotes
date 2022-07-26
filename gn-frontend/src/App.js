@@ -6,6 +6,8 @@ import EditNote from './components/EditNote';
 import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import HomeBody from './components/HomeBody';
+import Login from './components/auth/Login';
+import SignUp from './components/auth/SignUp';
 
 function App() {
   // const notesTest = [
@@ -53,17 +55,29 @@ function App() {
     // Header section
     <Router>
       <div className="app">
-        <Header />
-        {/* <ErrorDisplay /> */}
-        <HomeBody notes={notes}/>
-
         <Switch>
-          <Route exact path="/editnote">
-            <EditNote isNewNote={true} setDependencies={setDependencies}/>
+          <Route exact path={"/login"}>
+            <Login />
           </Route>
-          <Route exact path="/editnote/:id">
-            <EditNote isNewNote={false} setDependencies={setDependencies}/>
+          <Route exact path={"/signup"}>
+            <SignUp />
           </Route>
+          
+          <Route path={"/"}>
+            <Header />
+            {/* <ErrorDisplay /> */}
+            <HomeBody notes={notes}/>
+
+            <Switch>
+              <Route exact path="/editnote">
+                <EditNote isNewNote={true} setDependencies={setDependencies}/>
+              </Route>
+              <Route exact path="/editnote/:id">
+                <EditNote isNewNote={false} setDependencies={setDependencies}/>
+              </Route>
+            </Switch>
+          </Route>
+
         </Switch>
         {/* {editNote && <EditNote closeFunction={editMode}/>} */}
       </div>
