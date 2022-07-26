@@ -9,6 +9,7 @@ const EditNote = (props) => {
     const [body, setBody] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const history = useHistory();
+    const { user } = props;
 
     // console.log("ID: ");
     // console.log(id);
@@ -29,20 +30,22 @@ const EditNote = (props) => {
             setIsLoading(false);
         }
     }, [id]);
-    
 
     // console.log(`id: ${id}`);
 
     let handleSubmit = (event) => {
         event.preventDefault();
         if(id) {
-            const updatedNote = { id, note: { title, body }};
+            const updatedNote = { id, user, note: { title, body }};
             fetch(`${process.env.REACT_APP_API_URL || ""}/modifynote`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updatedNote)
             })
-            .then(() => {
+            .then((res) => {
+                if(res.redirect) {
+                    history.push(res.redirect);
+                }
                 console.log("Updated note");
                 props.setDependencies(true); // to force reload of home page
                 history.push("/"); 
@@ -52,13 +55,16 @@ const EditNote = (props) => {
             });
         }
         else if(!(title === "" && body === "")) {
-            const newNote = { title, body };
+            const newNote = { user, title, body };
             fetch(`${process.env.REACT_APP_API_URL || ""}/addnote`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(newNote)
             })
-            .then(() => {
+            .then((res) => {
+                if(res.redirect) {
+                    history.push(res.redirect);
+                }
                 console.log("Added new note");
                 props.setDependencies(true); // to force reload of home page
                 history.push("/");
@@ -68,6 +74,7 @@ const EditNote = (props) => {
             });
         }
         else {
+            console.log("No new note added");
             history.push("/");
         }
         
@@ -84,7 +91,10 @@ const EditNote = (props) => {
             fetch(`${process.env.REACT_APP_API_URL || ""}/deletenote/${id}`, {
                 method: "DELETE",
             })
-            .then(() => {
+            .then((res) => {
+                if(res.redirect) {
+                    history.push(res.redirect);
+                }
                 console.log("Deleted note");
                 props.setDependencies(true); // to force reload of home page
                 history.push("/");

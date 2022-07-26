@@ -4,7 +4,7 @@ import Header from './components/Header';
 import EditNote from './components/EditNote';
 // import ErrorDisplay from './components/ErrorDisplay';
 import { useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 import HomeBody from './components/HomeBody';
 import Login from './components/auth/Login';
 import SignUp from './components/auth/SignUp';
@@ -22,7 +22,10 @@ function App() {
   // ];
   // const [editNote, setEditNote] = useState(false);
   const [notes, setNotes] = useState([]);
+  const history = useHistory();
   const [dependencies, setDependencies] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState({});
 
   // const editMode = (isEditMode) => {
   //   setEditNote(isEditMode);
@@ -35,12 +38,17 @@ function App() {
         return res.json();
       })
       .then(data => {
-        // console.log(data);
-        setNotes(data);
+        // console.log(data.redirect);
+        if(data.redirect) {
+          history.push(data.redirect);
+        }
+        setUser(data.user);
+        setNotes(data.notes);
+        setIsLoading(false);
         setDependencies(false);
       })
       .catch(err => {console.log("ERROR in fetching: " + err);});
-  }, [dependencies]);
+  }, [dependencies, history]);
 
   // let testFetch = () => {
   //   fetch("http://localhost:3001/getNotes/")
@@ -53,36 +61,35 @@ function App() {
 
   return (
     // Header section
-    <Router>
-      <div className="app">
-        <Switch>
-          <Route exact path={"/login"}>
-            <Login />
-          </Route>
-          <Route exact path={"/signup"}>
-            <SignUp />
-          </Route>
-          
-          <Route path={"/"}>
-            <Header />
-            {/* <ErrorDisplay /> */}
-            <HomeBody notes={notes}/>
+    (<div className="app">
+      <Switch>
+        <Route exact path={"/login"}>
+          <Login setDependencies={setDependencies} />
+        </Route>
+        <Route exact path={"/signup"}>
+          <SignUp />
+        </Route>
+        
+        <Route path={"/*"}>
+          <Header />
+          {/* <ErrorDisplay /> */}
 
+          {!isLoading ? (<><HomeBody notes={notes}/>
             <Switch>
               <Route exact path="/editnote">
-                <EditNote isNewNote={true} setDependencies={setDependencies}/>
+                <EditNote user={user._id} isNewNote={true} setDependencies={setDependencies}/>
               </Route>
               <Route exact path="/editnote/:id">
-                <EditNote isNewNote={false} setDependencies={setDependencies}/>
+                <EditNote user={user._id} isNewNote={false} setDependencies={setDependencies}/>
               </Route>
             </Switch>
-          </Route>
+          </>) : null }
+        </Route>
 
-        </Switch>
-        {/* {editNote && <EditNote closeFunction={editMode}/>} */}
-      </div>
+      </Switch>
+      {/* {editNote && <EditNote closeFunction={editMode}/>} */}
       {/* <button onClick={testFetch}>Test</button> */}
-    </Router>
+    </div>)
 
   );
 }

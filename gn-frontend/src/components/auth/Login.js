@@ -25,7 +25,8 @@ const Login = (props) => {
                 console.log(resp);
             }
             else {
-                // props.setDependencies(true); // to force reload of home page
+                console.log("user logged in");
+                props.setDependencies(true); // to force reload of home page
                 history.push("/"); 
             }
 
