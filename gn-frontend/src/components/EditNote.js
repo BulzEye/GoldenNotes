@@ -46,9 +46,11 @@ const EditNote = (props) => {
                 if(res.redirect) {
                     history.push(res.redirect);
                 }
-                console.log("Updated note");
-                props.setDependencies(true); // to force reload of home page
-                history.push("/"); 
+                else {
+                    console.log("Updated note");
+                    props.setDependencies(true); // to force reload of home page
+                    history.push("/"); 
+                }
             })
             .catch((err) => {
                 console.log("ERROR updating note: " + err);
@@ -65,9 +67,12 @@ const EditNote = (props) => {
                 if(res.redirect) {
                     history.push(res.redirect);
                 }
-                console.log("Added new note");
-                props.setDependencies(true); // to force reload of home page
-                history.push("/");
+                else {
+                    console.log("Added new note");
+                    props.setDependencies(true); // to force reload of home page
+                    history.push("/");
+
+                }
             })
             .catch((err) => {
                 console.log("ERROR adding note: " + err);
@@ -95,9 +100,11 @@ const EditNote = (props) => {
                 if(res.redirect) {
                     history.push(res.redirect);
                 }
-                console.log("Deleted note");
-                props.setDependencies(true); // to force reload of home page
-                history.push("/");
+                else {
+                    console.log("Deleted note");
+                    props.setDependencies(true); // to force reload of home page
+                    history.push("/");
+                }
             })
             .catch((err) => {
                 console.log("ERROR deleting note: " + err);

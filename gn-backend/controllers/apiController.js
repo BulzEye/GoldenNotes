@@ -4,7 +4,9 @@ const Note = require("../models/Note");
 const User = require("../models/User");
 
 const checkUser = (token) => {
-    if(token) {
+    console.log(token);
+    if(token === undefined) {
+        console.log("reached");
         try {
             const decodedToken = jwt.verify(token, "BulzEye secret");
             if(decodedToken) {
@@ -18,7 +20,7 @@ const checkUser = (token) => {
             }
         }
         catch(err) {
-            console.log(err.message);
+            console.log("JWT verification error: " + err.message);
             // user jwt not verified
             return undefined;
         }
@@ -143,10 +145,31 @@ const note_ID_delete = (req, res) => {
     }
 };
 
+const user_get = async (req, res) => {
+    console.log(req.params.token);
+    const userId = checkUser(req.params.token);
+    if(userId) {
+        console.log("Got user");
+        User.findById(userId)
+        .then((user) => {
+            res.json({user});
+        })
+        .catch((err) => {
+            res.status(400).json({redirect: "/login"});
+        });
+    }
+    else {
+        // user not found, redirect user
+        console.log("User not found");
+        res.json({redirect: "/login"});
+    }
+}
+
 module.exports = {
     notes_all_get,
     note_ID_get,
     note_add_post,
     note_modify_post,
-    note_ID_delete
+    note_ID_delete,
+    user_get
 }

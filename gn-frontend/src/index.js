@@ -5,12 +5,15 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { BrowserRouter as Router } from "react-router-dom";
+import { CookiesProvider } from "react-cookie";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
-      <App />
-    </Router>
+    <CookiesProvider>
+      <Router>
+        <App />
+      </Router>
+    </CookiesProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

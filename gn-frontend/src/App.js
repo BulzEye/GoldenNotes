@@ -8,6 +8,8 @@ import { Route, Switch, useHistory } from "react-router-dom";
 import HomeBody from './components/HomeBody';
 import Login from './components/auth/Login';
 import SignUp from './components/auth/SignUp';
+import { useCookies } from 'react-cookie';
+import Protected from './components/Protected';
 
 function App() {
   // const notesTest = [
@@ -21,34 +23,65 @@ function App() {
   //   }
   // ];
   // const [editNote, setEditNote] = useState(false);
-  const [notes, setNotes] = useState([]);
+  // const [notes, setNotes] = useState([]);
   const history = useHistory();
   const [dependencies, setDependencies] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState({});
+  const [cookie, setCookie] = useCookies();
+
+  const protectedRoutes = ["/", "/editnote"]
 
   // const editMode = (isEditMode) => {
   //   setEditNote(isEditMode);
   // }
 
+  // useEffect(() => {
+  //   fetch(`${process.env.REACT_APP_API_URL || ""}/getNotes/`)
+  //     .then(res => {
+  //       // console.log("Response: " + res);
+  //       return res.json();
+  //     })
+  //     .then(data => {
+  //       // console.log(data.redirect);
+  //       if(data.redirect) {
+  //         history.push(data.redirect);
+  //       }
+  //       else {
+  //         setUser(data.user);
+  //         console.log(data.notes);
+  //         setNotes(data.notes);
+  //         // setIsLoading(false);
+  //         setDependencies(false);
+  //       }
+  //     })
+  //     .catch(err => {console.log("ERROR in fetching: " + err);});
+  // }, [dependencies]);
+
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL || ""}/getNotes/`)
-      .then(res => {
-        // console.log("Response: " + res);
-        return res.json();
+    const abortContr = new AbortController();
+    fetch(`${process.env.REACT_APP_API_URL || ""}/getUser/${cookie.jwt}`, {signal: abortContr.signal})
+      .then(res => res.json())
+      .then(resUser => {
+        // console.log(freePaths.indexOf(history.location.pathname));
+        // if (resUser.redirect && freePaths.indexOf(history.location.pathname)<0) {
+        //   history.push(resUser.redirect);
+        // }
+        // else {
+          setUser(resUser.user);
+        // }
       })
-      .then(data => {
-        // console.log(data.redirect);
-        if(data.redirect) {
-          history.push(data.redirect);
+      .catch((err) => {
+        if(err.name === "AbortError") {
+          console.log("fetch aborted");
         }
-        setUser(data.user);
-        setNotes(data.notes);
-        setIsLoading(false);
-        setDependencies(false);
-      })
-      .catch(err => {console.log("ERROR in fetching: " + err);});
-  }, [dependencies, history]);
+        else {
+          console.log("User not found");
+          console.log(err);
+        }
+      });
+    
+    return () => {abortContr.abort()};
+  }, [dependencies]);
 
   // let testFetch = () => {
   //   fetch("http://localhost:3001/getNotes/")
@@ -70,20 +103,26 @@ function App() {
           <SignUp />
         </Route>
         
-        <Route path={"/*"}>
-          <Header />
-          {/* <ErrorDisplay /> */}
+        <Route path={"/"}>
+          <Protected user={user}>
+            <Header />
+            {/* <ErrorDisplay /> */}
 
-          {!isLoading ? (<><HomeBody notes={notes}/>
-            <Switch>
-              <Route exact path="/editnote">
-                <EditNote user={user._id} isNewNote={true} setDependencies={setDependencies}/>
-              </Route>
-              <Route exact path="/editnote/:id">
-                <EditNote user={user._id} isNewNote={false} setDependencies={setDependencies}/>
-              </Route>
-            </Switch>
-          </>) : null }
+            (<><HomeBody setDependencies={setDependencies} dependencies={dependencies}/>
+              <Switch>
+                <Route exact path="/editnote">
+                  <Protected user={user}>
+                    <EditNote user={user._id} isNewNote={true} setDependencies={setDependencies}/>
+                  </Protected>
+                </Route>
+                <Route exact path="/editnote/:id">
+                  <Protected user={user}>
+                    <EditNote user={user._id} isNewNote={false} setDependencies={setDependencies}/>
+                  </Protected>
+                </Route>
+              </Switch>
+            </>)
+          </Protected>
         </Route>
 
       </Switch>
