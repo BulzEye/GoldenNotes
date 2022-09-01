@@ -38,7 +38,7 @@ const HomeBody = (props) => {
 
     return (
         (!isLoading) ? <div className="noteBody">
-            {notes.map((note) => (
+            {notes && notes.map((note) => (
                 <Note key={note._id} content={note} />
             ))
             }
