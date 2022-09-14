@@ -145,31 +145,10 @@ const note_ID_delete = (req, res) => {
     }
 };
 
-const user_get = async (req, res) => {
-    console.log(req.params.token);
-    const userId = checkUser(req.params.token);
-    if(userId) {
-        console.log("Got user");
-        User.findById(userId)
-        .then((user) => {
-            res.json({user});
-        })
-        .catch((err) => {
-            res.status(400).json({redirect: "/login"});
-        });
-    }
-    else {
-        // user not found, redirect user
-        console.log("User not found");
-        res.json({redirect: "/login"});
-    }
-}
-
 module.exports = {
     notes_all_get,
     note_ID_get,
     note_add_post,
     note_modify_post,
-    note_ID_delete,
-    user_get
+    note_ID_delete
 }

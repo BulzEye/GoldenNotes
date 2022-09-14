@@ -13,6 +13,4 @@ router.post("/modifynote", controller.note_modify_post);
 
 router.delete("/deletenote/:id", controller.note_ID_delete);
 
-router.get("/getUser/:token", controller.user_get);
-
 module.exports = router;

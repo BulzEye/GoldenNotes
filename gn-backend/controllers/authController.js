@@ -38,7 +38,8 @@ module.exports.login_post = (req, res) => {
     .then((user) => {
         const token = createToken(user._id);
         res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge*1000 });
-        res.status(201).send({ user: user._id });
+        user.password = undefined;
+        res.status(201).send({ jwt: token, user });
     })
     .catch((err) => {
         // console.log(err);
@@ -57,7 +58,8 @@ module.exports.signup_post = async (req, res) => {
         // res.status(201).send(user);
         const token = createToken(user._id);
         res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge*1000 });
-        res.status(201).send({ user: user._id });
+        user.password = undefined;
+        res.status(201).send({ jwt: token, user });
     })
     .catch((err) => {
         const errors = errorHandler(err);
@@ -66,3 +68,23 @@ module.exports.signup_post = async (req, res) => {
 
     // res.send("Received request");
 };
+
+module.exports.user_get = async (req, res) => {
+    console.log(req.params.token);
+    const userId = checkUser(req.params.token);
+    if(userId) {
+        console.log("Got user");
+        User.findById(userId)
+        .then((user) => {
+            res.json({user});
+        })
+        .catch((err) => {
+            res.status(400).json({redirect: "/login"});
+        });
+    }
+    else {
+        // user not found, redirect user
+        console.log("User not found");
+        res.json({redirect: "/login"});
+    }
+}

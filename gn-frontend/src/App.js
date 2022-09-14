@@ -4,12 +4,13 @@ import Header from './components/Header';
 import EditNote from './components/EditNote';
 // import ErrorDisplay from './components/ErrorDisplay';
 import { useEffect, useState } from "react";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { Redirect, Route, Switch, useHistory } from "react-router-dom";
 import HomeBody from './components/HomeBody';
 import Login from './components/auth/Login';
 import SignUp from './components/auth/SignUp';
 import { useCookies } from 'react-cookie';
 import Protected from './components/Protected';
+import { useUserContext } from './hooks/useUserContext';
 
 function App() {
   // const notesTest = [
@@ -26,14 +27,21 @@ function App() {
   // const [notes, setNotes] = useState([]);
   const history = useHistory();
   const [dependencies, setDependencies] = useState(false);
-  const [user, setUser] = useState({});
+  // const [user, setUser] = useState({});
   const [cookie, setCookie] = useCookies();
+  const { isLoggedIn, user, dispatch } = useUserContext();
 
   const protectedRoutes = ["/", "/editnote"]
 
   // const editMode = (isEditMode) => {
   //   setEditNote(isEditMode);
   // }
+
+  useEffect(() => {
+    console.log("Reached home page");
+    console.log(isLoggedIn);
+    console.log(user);
+  }, [])
 
   // useEffect(() => {
   //   fetch(`${process.env.REACT_APP_API_URL || ""}/getNotes/`)
@@ -57,31 +65,31 @@ function App() {
   //     .catch(err => {console.log("ERROR in fetching: " + err);});
   // }, [dependencies]);
 
-  useEffect(() => {
-    const abortContr = new AbortController();
-    fetch(`${process.env.REACT_APP_API_URL || ""}/getUser/${cookie.jwt}`, {signal: abortContr.signal})
-      .then(res => res.json())
-      .then(resUser => {
-        // console.log(freePaths.indexOf(history.location.pathname));
-        // if (resUser.redirect && freePaths.indexOf(history.location.pathname)<0) {
-        //   history.push(resUser.redirect);
-        // }
-        // else {
-          setUser(resUser.user);
-        // }
-      })
-      .catch((err) => {
-        if(err.name === "AbortError") {
-          console.log("fetch aborted");
-        }
-        else {
-          console.log("User not found");
-          console.log(err);
-        }
-      });
+  // useEffect(() => {
+  //   const abortContr = new AbortController();
+  //   fetch(`${process.env.REACT_APP_API_URL || ""}/getUser/${cookie.jwt}`, {signal: abortContr.signal})
+  //     .then(res => res.json())
+  //     .then(resUser => {
+  //       // console.log(freePaths.indexOf(history.location.pathname));
+  //       // if (resUser.redirect && freePaths.indexOf(history.location.pathname)<0) {
+  //       //   history.push(resUser.redirect);
+  //       // }
+  //       // else {
+  //         setUser(resUser.user);
+  //       // }
+  //     })
+  //     .catch((err) => {
+  //       if(err.name === "AbortError") {
+  //         console.log("fetch aborted");
+  //       }
+  //       else {
+  //         console.log("User not found");
+  //         console.log(err);
+  //       }
+  //     });
     
-    return () => {abortContr.abort()};
-  }, [dependencies]);
+  //   return () => {abortContr.abort()};
+  // }, [dependencies]);
 
   // let testFetch = () => {
   //   fetch("http://localhost:3001/getNotes/")
@@ -97,33 +105,28 @@ function App() {
     (<div className="app">
       <Switch>
         <Route exact path={"/login"}>
-          <Login setDependencies={setDependencies} />
+          {!isLoggedIn ? <Login setDependencies={setDependencies} /> : <Redirect to={"/"} /> }
         </Route>
         <Route exact path={"/signup"}>
-          <SignUp />
+          {!isLoggedIn ? <SignUp /> : <Redirect to={"/"} /> }
         </Route>
-        
         <Route path={"/"}>
-          <Protected user={user}>
+          { isLoggedIn ? (<>
             <Header />
             {/* <ErrorDisplay /> */}
-
-            (<><HomeBody setDependencies={setDependencies} dependencies={dependencies}/>
-              <Switch>
-                <Route exact path="/editnote">
-                  <Protected user={user}>
-                    <EditNote user={user._id} isNewNote={true} setDependencies={setDependencies}/>
-                  </Protected>
-                </Route>
-                <Route exact path="/editnote/:id">
-                  <Protected user={user}>
-                    <EditNote user={user._id} isNewNote={false} setDependencies={setDependencies}/>
-                  </Protected>
-                </Route>
-              </Switch>
-            </>)
-          </Protected>
+            <HomeBody setDependencies={setDependencies} dependencies={dependencies}/>
+            <Switch>
+              <Route exact path="/editnote">
+                <EditNote isNewNote={true} setDependencies={setDependencies}/>
+              </Route>
+              <Route exact path="/editnote/:id">
+                <EditNote isNewNote={false} setDependencies={setDependencies}/>
+              </Route>
+            </Switch>
+          </>) : <Redirect to={"/login"} /> 
+          }
         </Route>
+        
 
       </Switch>
       {/* {editNote && <EditNote closeFunction={editMode}/>} */}

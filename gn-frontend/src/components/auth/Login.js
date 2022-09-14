@@ -2,12 +2,14 @@ import "./Login.css";
 import "./AuthStyle.css";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { useUserContext } from "../../hooks/useUserContext";
 
 const Login = (props) => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const history = useHistory();
+    const { userState, dispatch } = useUserContext();
     
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -26,7 +28,11 @@ const Login = (props) => {
             }
             else {
                 console.log("user logged in");
+                console.log(resp);
+                dispatch({type: "USER_LOGIN", payload: resp});
+                localStorage.setItem("user", JSON.stringify(resp));
                 props.setDependencies(true); // to force reload of home page
+                console.log("Going to home page");
                 history.push("/"); 
             }
 
