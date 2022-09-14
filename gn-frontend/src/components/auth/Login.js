@@ -1,7 +1,7 @@
 import "./Login.css";
 import "./AuthStyle.css";
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useUserContext } from "../../hooks/useUserContext";
 
 const Login = (props) => {
@@ -59,6 +59,7 @@ const Login = (props) => {
                     <input type="password" name="password" id="loginPass" value={password} onChange={(e) => setPassword(e.target.value)} />
                     <button type="submit">Login</button>
                 </form>
+                <span className="prompt">Don't have an account? <Link to={"/signup"}>Sign up</Link> instead.</span>
             </div>
         </div>
     );

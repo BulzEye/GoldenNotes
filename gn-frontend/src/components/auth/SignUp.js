@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useSignUp } from "../../hooks/useSignUp";
 
 const SignUp = (props) => {
@@ -26,6 +27,7 @@ const SignUp = (props) => {
                     <input type="password" name="password" id="signupPass" value={password} onChange={(e) => setPassword(e.target.value)} />
                     <button type="submit">Register</button>
                 </form>
+                <span className="prompt">Already have an account? <Link to={"/login"}>Login</Link> instead.</span>
             </div>
         </div>
      );

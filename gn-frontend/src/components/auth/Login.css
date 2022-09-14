@@ -35,6 +35,7 @@ div.authPage input[type=email], div.authPage input[type=password] {
     border: 1px solid black;
     border-radius: 5px;
     display: block;
+    width: 100%;
     /* font-weight: bold; */
     /* background-color: #ffd9b3; */
 }
@@ -49,7 +50,7 @@ div.authPage button[type=submit] {
     font-size: 1rem;
     font-family: var(--heading-font);
     border-radius: 5px;
-    margin-top: 0.5rem;
+    margin: 0.5rem 0px 1rem;
     cursor: pointer;
 }
 
