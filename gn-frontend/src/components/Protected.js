@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import { useCookies } from "react-cookie";
+// import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
 import { useUserContext } from "../hooks/useUserContext";
 
 const Protected = (props) => {
-    const {userState, dispatch} = useUserContext();
-    const [cookies] = useCookies();
+    const {userState} = useUserContext();
+    // const [cookies] = useCookies();
     const history = useHistory();
 
     useEffect(() => {

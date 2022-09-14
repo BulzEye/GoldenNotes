@@ -30,6 +30,8 @@ const EditNote = (props) => {
         else {
             setIsLoading(false);
         }
+        // To disable error that tells to add jwt as a dependency
+        // eslint-disable-next-line
     }, [id]);
 
     let handleSubmit = (event) => {

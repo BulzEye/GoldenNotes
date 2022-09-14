@@ -9,7 +9,7 @@ const HomeBody = (props) => {
     const history = useHistory();
     const [isLoading, setIsLoading] = useState(true);
     const { dependencies, setDependencies } = props;
-    const { user, jwt } = useUserContext();
+    const { jwt } = useUserContext();
 
 
     useEffect(() => {

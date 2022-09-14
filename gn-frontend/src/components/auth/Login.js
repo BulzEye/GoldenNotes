@@ -9,7 +9,7 @@ const Login = (props) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const history = useHistory();
-    const { userState, dispatch } = useUserContext();
+    const { dispatch } = useUserContext();
     
     const handleSubmit = (e) => {
         e.preventDefault();
