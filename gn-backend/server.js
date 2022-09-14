@@ -41,5 +41,5 @@ app.get("/", (req, res) => {
     res.send("<p>Hello</p>");
 });
 
-app.use(apiRoutes);
 app.use(authRoutes);
+app.use(apiRoutes);

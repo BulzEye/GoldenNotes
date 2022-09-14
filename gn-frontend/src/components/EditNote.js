@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
+import { useUserContext } from "../hooks/useUserContext";
 import "./EditNote.css";
 
 const EditNote = (props) => {
@@ -9,13 +10,13 @@ const EditNote = (props) => {
     const [body, setBody] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const history = useHistory();
-    const { user } = props;
+    const { user, jwt } = useUserContext();
 
-    // console.log("ID: ");
-    // console.log(id);
     useEffect(() => {
         if(id) {
-            fetch(`${process.env.REACT_APP_API_URL || ""}/note/${id}`)
+            fetch(`${process.env.REACT_APP_API_URL || ""}/note/${id}`, {
+                headers: {'Authorization': `Bearer ${jwt}`}
+            })
                 .then((res) => res.json())
                 .then((note) => {
                     setTitle(note.title);
@@ -31,26 +32,21 @@ const EditNote = (props) => {
         }
     }, [id]);
 
-    // console.log(`id: ${id}`);
-
     let handleSubmit = (event) => {
         event.preventDefault();
         if(id) {
             const updatedNote = { id, user, note: { title, body }};
             fetch(`${process.env.REACT_APP_API_URL || ""}/modifynote`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${jwt}` },
                 body: JSON.stringify(updatedNote)
             })
             .then((res) => {
-                if(res.redirect) {
-                    history.push(res.redirect);
-                }
-                else {
-                    console.log("Updated note");
-                    props.setDependencies(true); // to force reload of home page
-                    history.push("/"); 
-                }
+                // console.log(res);
+                console.log("Updated note");
+                props.setDependencies(true); // to force reload of home page
+                history.push("/"); 
+                // }
             })
             .catch((err) => {
                 console.log("ERROR updating note: " + err);
@@ -60,19 +56,15 @@ const EditNote = (props) => {
             const newNote = { user, title, body };
             fetch(`${process.env.REACT_APP_API_URL || ""}/addnote`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json",  'Authorization': `Bearer ${jwt}`},
                 body: JSON.stringify(newNote)
             })
             .then((res) => {
-                if(res.redirect) {
-                    history.push(res.redirect);
-                }
-                else {
-                    console.log("Added new note");
-                    props.setDependencies(true); // to force reload of home page
-                    history.push("/");
-
-                }
+                // console.log(res);
+                console.log("Added new note");
+                props.setDependencies(true); // to force reload of home page
+                history.push("/");
+                // }
             })
             .catch((err) => {
                 console.log("ERROR adding note: " + err);
@@ -95,16 +87,12 @@ const EditNote = (props) => {
             console.log("true");
             fetch(`${process.env.REACT_APP_API_URL || ""}/deletenote/${id}`, {
                 method: "DELETE",
+                headers: {'Authorization': `Bearer ${jwt}`}
             })
             .then((res) => {
-                if(res.redirect) {
-                    history.push(res.redirect);
-                }
-                else {
-                    console.log("Deleted note");
-                    props.setDependencies(true); // to force reload of home page
-                    history.push("/");
-                }
+                console.log("Deleted note");
+                props.setDependencies(true); // to force reload of home page
+                history.push("/");
             })
             .catch((err) => {
                 console.log("ERROR deleting note: " + err);

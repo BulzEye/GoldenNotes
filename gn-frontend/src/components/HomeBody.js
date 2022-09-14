@@ -9,18 +9,22 @@ const HomeBody = (props) => {
     const history = useHistory();
     const [isLoading, setIsLoading] = useState(true);
     const { dependencies, setDependencies } = props;
-    const { user } = useUserContext();
+    const { user, jwt } = useUserContext();
 
 
     useEffect(() => {
         const abortContr = new AbortController();
-        fetch(`${process.env.REACT_APP_API_URL || ""}/getNotes/`, {signal: abortContr.signal})
+        // console.log(user);
+        fetch(`${process.env.REACT_APP_API_URL || ""}/getNotes/`, {
+            signal: abortContr.signal,
+            headers: {'Authorization': `Bearer ${jwt}`}
+        })
             .then(res => {
                 // console.log("Response: " + res);
                 return res.json();
             })
             .then(data => {
-                console.log(data.redirect);
+                // console.log(data.redirect);
                 // if (data.redirect) {
                 //     history.push(data.redirect);
                 // }
@@ -39,10 +43,10 @@ const HomeBody = (props) => {
 
     return (
         (!isLoading) ? <div className="noteBody">
-            {/* {notes && notes.map((note) => (
+            {notes && notes.map((note) => (
                 <Note key={note._id} content={note} />
             ))
-            } */}
+            }
             {/* <Note /> */}
             {/* <span>{JSON.stringify(user)}</span> */}
             <Link to={"/editnote"}>
