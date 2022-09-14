@@ -9,6 +9,13 @@ export const userReducer = (state, action) => {
                 isLoggedIn: true,
                 ...action.payload
             };
+
+        case "USER_LOGOUT":
+            return {
+                isLoggedIn: false,
+                jwt: null,
+                user: null
+            }
         default:
             return state;
     }
