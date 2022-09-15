@@ -1,15 +1,24 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useSignUp } from "../../hooks/useSignUp";
+import "./AuthStyle.css";
 
 const SignUp = (props) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [errors, setErrors] = useState({email: null, password: null});
     const { signUp } = useSignUp();
     
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        signUp(email, password);
+        setErrors({email: null, password: null});
+        const res = await signUp(email, password);
+        console.log(res);
+
+        // a res is only returned if there are errors
+        if(res) {
+            setErrors(res);
+        }
     }
     
     return ( 
@@ -21,10 +30,12 @@ const SignUp = (props) => {
                         Email
                     </label>
                     <input type="email" name="email" id="signupEmail" value={email} onChange={(e) => setEmail(e.target.value)} />
+                    {errors.email && <div className="error errorMail">{errors.email}</div>}
                     <label htmlFor="password">
                         Password
                     </label>
                     <input type="password" name="password" id="signupPass" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    {errors.password && <div className="error errorPass">{errors.password}</div>}
                     <button type="submit">Register</button>
                 </form>
                 <span className="prompt">Already have an account? <Link to={"/login"}>Login</Link> instead.</span>

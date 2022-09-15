@@ -8,6 +8,7 @@ const Login = (props) => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [errors, setErrors] = useState({email: null, password: null});
     const history = useHistory();
     const { dispatch } = useUserContext();
     
@@ -25,6 +26,7 @@ const Login = (props) => {
             // check for errors
             if(resp.errors) {
                 console.log(resp);
+                setErrors(resp.errors);
             }
             else {
                 console.log("user logged in");
@@ -53,10 +55,12 @@ const Login = (props) => {
                         Email
                     </label>
                     <input type="email" name="email" id="loginEmail" value={email} onChange={(e) => setEmail(e.target.value)} />
+                    {errors.email && <div className="error errorMail">{errors.email}</div>}
                     <label htmlFor="password">
                         Password
                     </label>
                     <input type="password" name="password" id="loginPass" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    {errors.password && <div className="error errorPass">{errors.password}</div>}
                     <button type="submit">Login</button>
                 </form>
                 <span className="prompt">Don't have an account? <Link to={"/signup"}>Sign up</Link> instead.</span>

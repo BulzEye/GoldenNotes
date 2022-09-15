@@ -5,19 +5,18 @@ export const useSignUp = () => {
     const history = useHistory();
     const { dispatch } = useUserContext();
 
-    const signUp = (email, password) => {
-        fetch(`${process.env.REACT_APP_API_URL || ""}/signup`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password })
-        })
-        .then((res) => {
-            return res.json();
-        })
-        .then((resp) => {
-            // check for errors
+    const signUp = async (email, password) => {
+        try {
+            const res = await fetch(`${process.env.REACT_APP_API_URL || ""}/signup`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password })
+            });
+            const resp = await res.json();
+
             if(resp.errors) {
                 console.log(resp);
+                return resp.errors;
             }
             else {
                 // user logged in, no errors
@@ -26,13 +25,14 @@ export const useSignUp = () => {
                 console.log(resp);
                 dispatch({type: "USER_LOGIN", payload: resp});
                 localStorage.setItem("user", JSON.stringify(resp));
-                history.push("/"); 
+                history.push("/");
+                return null;
             }
 
-        })
-        .catch((err) => {
+        }
+        catch(err) {
             console.log("ERROR sending signup request: " + err);
-        });
+        }
     }
 
     return { signUp };
