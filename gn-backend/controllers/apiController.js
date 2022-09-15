@@ -70,28 +70,32 @@ const note_ID_get = (req, res) => {
 };
 
 const note_add_post = (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
 
     let userId = req.user._id;
+    req.body.user = userId;
     const note = new Note(req.body);
-
+    
     note.save()
     .then((result) => {
+        console.log("Added new note");
         res.redirect("/");
     })
     .catch((err) => {
         console.log("ERROR in saving note: " + err);
     });
-
+    
     
 };
 
 const note_modify_post = (req, res) => {
     let userId = req.user._id;
     // console.log(userId);
-    console.log(req.body.note);
+    // console.log(req.body);
+    req.body.user = userId;
     Note.findByIdAndUpdate(req.body.id, req.body.note)
     .then((result) => {
+        console.log("Modified note");
         res.redirect("/");
     })
     .catch((err) => {
@@ -105,6 +109,7 @@ const note_ID_delete = (req, res) => {
     const id = req.params.id;
     Note.findByIdAndDelete(id)
     .then((result) => {
+        console.log("Deleted note");
         res.json({success: true});
     })
     .catch((err) => {

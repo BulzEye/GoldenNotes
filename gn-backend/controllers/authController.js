@@ -38,6 +38,7 @@ module.exports.login_post = (req, res) => {
     .then((user) => {
         const token = createToken(user._id);
         res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge*1000 });
+        user._id = undefined;
         user.password = undefined;
         res.status(201).send({ jwt: token, user });
     })
@@ -58,6 +59,7 @@ module.exports.signup_post = async (req, res) => {
         // res.status(201).send(user);
         const token = createToken(user._id);
         res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge*1000 });
+        user._id = undefined;
         user.password = undefined;
         res.status(201).send({ jwt: token, user });
     })

@@ -37,7 +37,7 @@ const EditNote = (props) => {
     let handleSubmit = (event) => {
         event.preventDefault();
         if(id) {
-            const updatedNote = { id, user, note: { title, body }};
+            const updatedNote = { id, note: { title, body }};
             fetch(`${process.env.REACT_APP_API_URL || ""}/modifynote`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${jwt}` },
@@ -55,7 +55,7 @@ const EditNote = (props) => {
             });
         }
         else if(!(title === "" && body === "")) {
-            const newNote = { user, title, body };
+            const newNote = { title, body };
             fetch(`${process.env.REACT_APP_API_URL || ""}/addnote`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json",  'Authorization': `Bearer ${jwt}`},
