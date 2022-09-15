@@ -13,8 +13,10 @@ const Note = (props) => {
         
         <div className="note" onClick={loadNote}>
             {/* <Link to={`/editnote/${props.content._id}`}> */}
-            <h3> {/* Note heading */} {props.content.title} </h3>
-            <p> { /* Note body */ } {props.content.body} </p>
+            <h3>{props.content.title}</h3> {/* Note heading */}
+            <p>{props.content.body}</p> { /* Note body */ }
+            {/* Note that every space in between the <p> tags will be displayed as-is (due to the whitespace property added). */}
+            {/* Thus do not add additional whitespace between those tags */}
             {/* </Link> */}
         </div>
      );
