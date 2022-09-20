@@ -1,5 +1,7 @@
 /* Note editing modal */
 
+/* Overall container (full-screen, including transparent background) */
+
 div.editNote {
     position: fixed;
     top: 0px;
@@ -22,10 +24,14 @@ div.editNote {
     }
 }
 
+/* Actual visible modal (the small orange box) */
+
 div.modal {
     width: 90%;
+    max-height: 80vh;
     margin: auto;
-    border: 2px solid black;
+    border: 2px solid #c55d00;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     /* background-color: white; */
     background-color: #ffd9b3;
@@ -60,10 +66,14 @@ div.modal {
     }
 }
 
+/* Top modal section with title and close buttons */
+
 div.modalHead {
     display: flex;
     justify-content: space-between;
 }
+
+/* Title text box */
 
 div.modalHead input[type=text] {
     padding: 10px;
@@ -71,34 +81,54 @@ div.modalHead input[type=text] {
     font-weight: bold;
     background-color: #ffd9b3;
     border: none;
-    max-width: 75%;
+    width: 90%;
 }
 
-div.modal button {
+div.modalHead input[type=text]:focus {
+    outline: none;
+}
+
+/* General button styles for all icon buttons */
+
+div.modal button, div.modalHead div.closeNote {
     background-color: #ffd9b3;
     border: none;
     border-radius: 50%;
 }
 
-div.modal button:hover {
+div.modal button:hover, div.modalHead div.closeNote:hover {
     background-color: #ffbf80;
     cursor: pointer;
 }
 
-div.modal button i {
+div.modal button i, div.modalHead div.closeNote i {
     display: flex;
     justify-content: center;
     align-items: center;
     /* font-weight: bold; */
 }
 
-div.modalHead button i {
+/* Close button */
+
+div.modalHead div.closeNote {
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+    padding: 5px;
+}
+
+div.modalHead div.closeNote i {
     font-size: 2rem;
 }
+
+/* Body text textarea */
 
 div.modalBody textarea {
     resize: none;
     width: 100%;
+    overflow: auto;
+    /* min-height: 11vh; */
+    max-height: 60vh;
     display: block;
     margin: 0px 0px 15px;
     padding: 10px;
@@ -108,6 +138,12 @@ div.modalBody textarea {
     background-color: #ffd9b3;
 }
 
+div.modalBody textarea:focus {
+    outline: none;
+}
+
+/* Bottom section with submit and delete buttons */
+
 div.modalBottom {
     display: flex;
     justify-content: space-between;
@@ -115,8 +151,11 @@ div.modalBottom {
 
 div.modalBottom button.submit {
     padding: 10px;
-    font-size: 1.2rem;
-    border-radius: 0px;
+    /* font-size: 1.2rem; */
+}
+
+div.modalBottom button.submit i {
+    font-size: 1.5rem;
 }
 
 div.modalBottom button.delete {
@@ -124,6 +163,6 @@ div.modalBottom button.delete {
     padding: auto;
 }
 
-div.modalBottom button i {
+div.modalBottom button.delete i {
     font-size: 1.25rem;
 }

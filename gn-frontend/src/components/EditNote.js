@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import "./EditNote.css";
 
 const EditNote = (props) => {
-
+    
     const { id } = useParams();
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const history = useHistory();
+    const textBody = useRef(null);
 
     // console.log("ID: ");
     // console.log(id);
@@ -20,6 +21,7 @@ const EditNote = (props) => {
                     setTitle(note.title);
                     setBody(note.body);
                     setIsLoading(false);
+                    textBody.current.style.height = `${textBody.current.scrollHeight}px`;
                 })
                 .catch((err) => {
                     console.log("ERROR in fetching note: " + err);
@@ -32,6 +34,14 @@ const EditNote = (props) => {
     
 
     // console.log(`id: ${id}`);
+
+
+    const resize = (event) => {
+        // setTextHeight("inherit");
+        event.target.style.height = "inherit";
+        event.target.style.height = `${event.target.scrollHeight}px`;
+        // setTextHeight(`${event.target.scrollHeight}px`);
+    }
 
     let handleSubmit = (event) => {
         event.preventDefault();
@@ -102,15 +112,25 @@ const EditNote = (props) => {
                     <form onSubmit={handleSubmit}>
                         <div className="modalHead">
                             <input type="text" name="title" id="editTitle" value={title} placeholder="Enter title" onChange={(e) => setTitle(e.target.value)}/>
-                            <button onClick={(e) => {e.preventDefault(); history.push("/");}}><i className="bi-x"></i></button>
+                            <div className="closeNote" onClick={(e) => {e.preventDefault(); history.push("/");}}><i className="bi-x"></i></div>
                             {/* onClick={() => {props.closeFunction(false)}} */}
                         </div>
                         <div className="modalBody">
-                            <textarea name="body" id="editBody" placeholder="Write a note..." style={{}} value={body} onChange={(e) => setBody(e.target.value)}></textarea>
+                            <textarea 
+                                name="body" 
+                                id="editBody" 
+                                rows={3} 
+                                placeholder="Write a note..."
+                                // style={{height: textHeight}} 
+                                value={body}
+                                ref={textBody}
+                                onChange={(e) => {setBody(e.target.value); resize(e)}}
+                                onLoad={(e) => {resize(e)}}
+                            ></textarea>
                         </div>
                         <div className="modalBottom">
-                            <button type="submit" className="submit">Submit</button>
-                            <button onClick={deleteNote} className="delete"><i className="bi bi-trash3"></i></button>
+                            <button onClick={deleteNote} className="delete" title={"Delete note"}><i className="bi bi-trash3"></i></button>
+                            <button type="submit" className="submit" title="Submit note"><i className="bi bi-arrow-right-circle"></i></button>
                         </div>
                     </form>
                 </div> : ""
