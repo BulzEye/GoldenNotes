@@ -10,7 +10,7 @@ const EditNote = (props) => {
     const [body, setBody] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const history = useHistory();
-    const { user, jwt } = useUserContext();
+    const { jwt } = useUserContext();
 
     useEffect(() => {
         if(id) {
@@ -19,6 +19,10 @@ const EditNote = (props) => {
             })
                 .then((res) => res.json())
                 .then((note) => {
+                    if(note.error) {
+                        history.push("/");
+                        throw Error(note.error);
+                    }
                     setTitle(note.title);
                     setBody(note.body);
                     setIsLoading(false);

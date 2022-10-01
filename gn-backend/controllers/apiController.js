@@ -61,7 +61,13 @@ const note_ID_get = (req, res) => {
     // check if note can be found even when passing user in query along with id
     Note.findById(id)
     .then(note => {
-        res.json(note);
+        if(note.user.equals(userId)) {
+            res.json(note);
+        }
+        else {
+            console.log(`ERROR in authorization`);
+            res.status(401).json({error: "Not authorized to modify this note"});
+        }
     })
     .catch(err => {
         console.log("ERROR in displaying notes");
