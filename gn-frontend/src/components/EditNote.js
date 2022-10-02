@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
+import { useUserContext } from "../hooks/useUserContext";
 import "./EditNote.css";
 
 const EditNote = (props) => {
@@ -9,15 +10,20 @@ const EditNote = (props) => {
     const [body, setBody] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const history = useHistory();
+    const { jwt } = useUserContext();
     const textBody = useRef(null);
 
-    // console.log("ID: ");
-    // console.log(id);
     useEffect(() => {
         if(id) {
-            fetch(`${process.env.REACT_APP_API_URL || ""}/note/${id}`)
+            fetch(`${process.env.REACT_APP_API_URL || ""}/note/${id}`, {
+                headers: {'Authorization': `Bearer ${jwt}`}
+            })
                 .then((res) => res.json())
                 .then((note) => {
+                    if(note.error) {
+                        history.push("/");
+                        throw Error(note.error);
+                    }
                     setTitle(note.title);
                     setBody(note.body);
                     setIsLoading(false);
@@ -30,6 +36,8 @@ const EditNote = (props) => {
         else {
             setIsLoading(false);
         }
+        // To disable error that tells to add jwt as a dependency
+        // eslint-disable-next-line
     }, [id]);
     
 
@@ -49,13 +57,15 @@ const EditNote = (props) => {
             const updatedNote = { id, note: { title, body }};
             fetch(`${process.env.REACT_APP_API_URL || ""}/modifynote`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${jwt}` },
                 body: JSON.stringify(updatedNote)
             })
-            .then(() => {
+            .then((res) => {
+                // console.log(res);
                 console.log("Updated note");
                 props.setDependencies(true); // to force reload of home page
                 history.push("/"); 
+                // }
             })
             .catch((err) => {
                 console.log("ERROR updating note: " + err);
@@ -65,19 +75,22 @@ const EditNote = (props) => {
             const newNote = { title, body };
             fetch(`${process.env.REACT_APP_API_URL || ""}/addnote`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json",  'Authorization': `Bearer ${jwt}`},
                 body: JSON.stringify(newNote)
             })
-            .then(() => {
+            .then((res) => {
+                // console.log(res);
                 console.log("Added new note");
                 props.setDependencies(true); // to force reload of home page
                 history.push("/");
+                // }
             })
             .catch((err) => {
                 console.log("ERROR adding note: " + err);
             });
         }
         else {
+            console.log("No new note added");
             history.push("/");
         }
         
@@ -93,8 +106,9 @@ const EditNote = (props) => {
             console.log("true");
             fetch(`${process.env.REACT_APP_API_URL || ""}/deletenote/${id}`, {
                 method: "DELETE",
+                headers: {'Authorization': `Bearer ${jwt}`}
             })
-            .then(() => {
+            .then((res) => {
                 console.log("Deleted note");
                 props.setDependencies(true); // to force reload of home page
                 history.push("/");

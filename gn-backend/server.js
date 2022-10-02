@@ -1,20 +1,23 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 const apiRoutes = require("./routes/apiRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 require("dotenv").config();
 
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 
 var corsOptions = {
     origin: 'https://goldennotes.netlify.app',
     optionsSuccessStatus: 200, // For legacy browser support
     methods: "GET, POST, DELETE"
-}
+};
 
 app.use(cors(corsOptions));
 
@@ -38,4 +41,5 @@ app.get("/", (req, res) => {
     res.send("<p>Hello</p>");
 });
 
+app.use(authRoutes);
 app.use(apiRoutes);

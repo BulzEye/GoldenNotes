@@ -8,13 +8,20 @@ header {
     background-color: #6b00b3;
 }
 
-h1 {
+header h1 {
     font-size: 2rem;
     margin: 0px;
     color: white;
 }
 
-button.newNote {
+header h1 a {
+    text-decoration: none;
+    color: white;
+}
+
+/* new note button styles, saved for later */
+
+/* button.userName {
     background-color: #f3e6ff;
     font-family: var(--heading-font);
     border: 0px;
@@ -22,12 +29,107 @@ button.newNote {
     font-weight: 500;
     border-radius: 3px;
     transition: background-color 0.1s;
-}
+} */
 
-button:hover {
+/* button:hover {
     background-color: #ce99ff;
+} */
+
+/* button:active {
+    background-color: #a64dff;
+} */
+
+/* username section */
+
+div.usernameSection {
+    position: relative;
 }
 
-button:active {
-    background-color: #a64dff;
+.userName {
+    font-weight: 600;
+}
+
+/* username button */
+
+button.userName {
+   border: none;
+   padding: 0px;
+   font-size: 1rem;
+   background-color: #6b00b3;
+   cursor: pointer;
+   color: white;
+}
+
+/* slight correction for down arrow icon */
+
+button.userName i {
+    position: relative;
+    top: 1px;
+}
+
+/* menu popup styles */
+
+div.userMenu {
+    position: absolute;
+    top: 40px;
+    right: 0px;
+    /* background-color: #f3e6ff; */
+    background-color: white;
+    /* padding: 5px 10px; */
+    border-radius: 5px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2)
+}
+
+/* reset defaults for list of menu items */
+
+div.userMenu ul {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+/* The next two element border styles effectively add a border around the menu */
+
+div.userMenu ul li {
+    padding: 10px 15px;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+div.userMenu ul li:first-child {
+    border: 1px solid black;
+    border-bottom: none;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+/* hover effects for menu buttons */
+
+div.userMenu ul li:hover {
+    background-color: #e6e6e6;
+}
+
+/* make sure the link tags don't add their own styles on top of our styles */
+
+div.userMenu ul li a {
+    color: black;
+    text-decoration: none;
+}
+
+/* special style for logout button */
+
+div.userMenu ul li#logout {
+    /* margin: -10px; */
+    margin-top: 0px;
+    padding: 10px 15px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border: 1px solid #ff4d4d;
+    background-color: #ffb3b3;
+}
+
+div.userMenu ul li#logout:hover {
+    background-color: #ff9999;
 }

@@ -1,0 +1,72 @@
+div.authContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+}
+
+div.authPage {
+    /* width: 40%; */
+    margin: auto;
+    border: 2px solid black;
+    border-radius: 10px;
+    /* background-color: white; */
+    background-color: #ffd9b3;
+    padding: 30px 30px;
+}
+
+div.authPage h1 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 0.6rem;
+}
+
+div.authPage label {
+    font-size: 1.1rem;
+    display: block;
+    margin: 0.3rem 0px;
+}
+
+div.authPage input[type=email], div.authPage input[type=password] {
+    padding: 10px;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    border: 1px solid black;
+    border-radius: 5px;
+    display: block;
+    width: 100%;
+    /* font-weight: bold; */
+    /* background-color: #ffd9b3; */
+}
+
+div.authPage button[type=submit] {
+    background-color: #FF8C1A;
+    /* background-color: #ff9933; */
+    color: white;
+    transition: 0.2s background-color;
+    padding: 10px 15px;
+    border: none;
+    font-size: 1rem;
+    font-family: var(--heading-font);
+    border-radius: 5px;
+    margin: 0.5rem 0px 1rem;
+    cursor: pointer;
+}
+
+div.authPage button:hover {
+    background-color: #e67300;
+}
+
+div.authPage button:active {
+    background-color: #ffbf80;
+}
+
+/* error text styling */
+
+div.error {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: -5px;
+}
+
