@@ -23,7 +23,11 @@ const Header = () => {
 
     return ( 
         <header>
-            <h1>GoldenNotes</h1>
+            <h1>
+                <Link to={"/"}>
+                    GoldenNotes
+                </Link>
+            </h1>
             {/* <Link to="/editnote"><button className="newNote">New Note</button></Link> */}
             {/* onClick={() => {props.buttonFunction(true)}} */}
             { isLoggedIn ? 

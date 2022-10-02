@@ -9,6 +9,7 @@ import HomeBody from './components/HomeBody';
 import Login from './components/auth/Login';
 import SignUp from './components/auth/SignUp';
 import { useUserContext } from './hooks/useUserContext';
+import Profile from './components/Profile';
 
 function App() {
     // const notesTest = [
@@ -60,7 +61,14 @@ function App() {
                     {isLoggedIn ? (<>
                         <Header />
                         {/* <ErrorDisplay /> */}
-                        <HomeBody setDependencies={setDependencies} dependencies={dependencies} />
+                        <Switch>
+                            <Route exact path={"/profile"}>
+                                <Profile />
+                            </Route>
+                            <Route path={"/"}>
+                                <HomeBody setDependencies={setDependencies} dependencies={dependencies} />
+                            </Route>
+                        </Switch>
                         <Switch>
                             <Route exact path="/editnote">
                                 <EditNote isNewNote={true} setDependencies={setDependencies} />
