@@ -4,12 +4,44 @@ div.note {
     border: 1px solid #FF8C1A;
     background-color: #ffd9b3;
     border-radius: 5px;
-    /* width: 20vw; */
+    width: 92vw;
     margin: 2vw 0px;
     padding: 20px;
     cursor: pointer;
     box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2) /*, 0px 2px 20px rgba(0, 0, 0, 0.1) */;
     transition: box-shadow 0.2s;
+}
+
+@media screen and (min-width: 600px) {
+    div.note {
+        /* grid-template-columns: auto auto; */
+        /* 88/2 */
+        width: 44vw;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    div.note {
+        /* grid-template-columns: auto auto auto; */
+        /* 84/3 */
+        width: 28vw;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    div.note {
+        /* grid-template-columns: auto auto auto auto; */
+        /* 80/4 */
+        width: 20vw;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    div.note {
+        /* grid-template-columns: auto auto auto auto auto; */
+        /* 76/5 = 152 */
+        width: 15.2vw;
+    }
 }
 
 div.note p {
