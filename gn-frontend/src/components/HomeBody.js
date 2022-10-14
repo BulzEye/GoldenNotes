@@ -3,6 +3,7 @@ import "./HomeBody.css";
 import { Link, useHistory } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useUserContext } from "../hooks/useUserContext";
+import { useNotesContext } from "../hooks/useNotesContext";
 
 const HomeBody = (props) => {   
     const [notes, setNotes] = useState([]);
@@ -10,7 +11,7 @@ const HomeBody = (props) => {
     const [isLoading, setIsLoading] = useState(true);
     const { dependencies, setDependencies } = props;
     const { jwt } = useUserContext();
-
+    const { notes: notes2, dispatch } = useNotesContext();
 
     useEffect(() => {
         const abortContr = new AbortController();
@@ -29,8 +30,9 @@ const HomeBody = (props) => {
                 //     history.push(data.redirect);
                 // }
                 // else {
-                    console.log("We are still fetching data");
+                    // console.log(data.notes);
                     setNotes(data.notes);
+                    // dispatch({type: "NOTES_SET", payload: data.notes});
                     setIsLoading(false);
                     setDependencies(false);
                 // }
@@ -43,10 +45,11 @@ const HomeBody = (props) => {
 
     return (
         (!isLoading) ? <div className="noteBody">
-            {notes && notes.map((note) => (
+            {notes2 && notes2.map((note) => (
                 <Note key={note._id} content={note} />
             ))
             }
+            {/* {JSON.stringify(notes2)} */}
             {/* <Note /> */}
             {/* <span>{JSON.stringify(user)}</span> */}
             {/* New note button (on bottom right) */}

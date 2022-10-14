@@ -28,7 +28,7 @@ export const UserContextProvider = ({children}) => {
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem("user"));
-        console.log(user);
+        // console.log(user);
         if(user) {
             dispatch({type: "USER_LOGIN", payload: user});
         }

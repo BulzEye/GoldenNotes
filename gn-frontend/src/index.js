@@ -7,14 +7,17 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import { BrowserRouter as Router } from "react-router-dom";
 import { CookiesProvider } from "react-cookie";
 import { UserContextProvider } from './context/UserContext';
+import { NotesContextProvider } from './context/NotesContext';
 
 ReactDOM.render(
   <React.StrictMode>
     <CookiesProvider>
       <UserContextProvider>
-        <Router>
-          <App />
-        </Router>
+        <NotesContextProvider>
+          <Router>
+            <App />
+          </Router>
+        </NotesContextProvider>
       </UserContextProvider>
     </CookiesProvider>
   </React.StrictMode>,

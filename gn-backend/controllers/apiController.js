@@ -38,7 +38,7 @@ const notes_all_get = (req, res) => {
     // console.log(userId);
     User.findById(userId)
     .then((user) => {
-        Note.find({ user })
+        Note.find({ user }, null, {sort: {createdAt: -1}})
         .then((notes) => {
             res.json({ user, notes });
         })
@@ -85,7 +85,7 @@ const note_add_post = (req, res) => {
     note.save()
     .then((result) => {
         console.log("Added new note");
-        res.redirect("/");
+        res.json(note);
     })
     .catch((err) => {
         console.log("ERROR in saving note: " + err);
@@ -99,10 +99,11 @@ const note_modify_post = (req, res) => {
     // console.log(userId);
     // console.log(req.body);
     req.body.user = userId;
-    Note.findByIdAndUpdate(req.body.id, req.body.note)
+    Note.findByIdAndUpdate(req.body.id, req.body.note, {new: true})
     .then((result) => {
         console.log("Modified note");
-        res.redirect("/");
+        // console.log(result);
+        res.json(result);
     })
     .catch((err) => {
         console.log("ERROR in saving note: " + err);
@@ -115,8 +116,9 @@ const note_ID_delete = (req, res) => {
     const id = req.params.id;
     Note.findByIdAndDelete(id)
     .then((result) => {
+        console.log(result);
         console.log("Deleted note");
-        res.json({success: true});
+        res.json(result);
     })
     .catch((err) => {
         console.log("ERROR in deleting note: " + err);

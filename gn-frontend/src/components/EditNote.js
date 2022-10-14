@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
+import { useNotesContext } from "../hooks/useNotesContext";
 import { useUserContext } from "../hooks/useUserContext";
 import "./EditNote.css";
 
@@ -11,6 +12,7 @@ const EditNote = (props) => {
     const [isLoading, setIsLoading] = useState(true);
     const history = useHistory();
     const { jwt } = useUserContext();
+    const { notes, dispatch } = useNotesContext();
     const textBody = useRef(null);
 
     useEffect(() => {
@@ -61,11 +63,15 @@ const EditNote = (props) => {
                 body: JSON.stringify(updatedNote)
             })
             .then((res) => {
-                // console.log(res);
+                console.log(res);
+                return res.json();
+            })
+            .then((note) => {
                 console.log("Updated note");
+                console.log(note);
+                dispatch({type: "NOTE_MODIFY", payload: note});
                 props.setDependencies(true); // to force reload of home page
                 history.push("/"); 
-                // }
             })
             .catch((err) => {
                 console.log("ERROR updating note: " + err);
@@ -78,9 +84,11 @@ const EditNote = (props) => {
                 headers: { "Content-Type": "application/json",  'Authorization': `Bearer ${jwt}`},
                 body: JSON.stringify(newNote)
             })
-            .then((res) => {
-                // console.log(res);
+            .then((res) => res.json())
+            .then((note) => {
+                console.log(note);
                 console.log("Added new note");
+                dispatch({type: "NOTE_ADD", payload: note});
                 props.setDependencies(true); // to force reload of home page
                 history.push("/");
                 // }
@@ -103,13 +111,16 @@ const EditNote = (props) => {
             history.push("/");
         }
         else if(window.confirm("Do you want to delete this note?")) {
-            console.log("true");
+            // console.log("true");
             fetch(`${process.env.REACT_APP_API_URL || ""}/deletenote/${id}`, {
                 method: "DELETE",
                 headers: {'Authorization': `Bearer ${jwt}`}
             })
-            .then((res) => {
+            .then((res) => res.json())
+            .then((oldNote) => {
                 console.log("Deleted note");
+                console.log(oldNote);
+                dispatch({type: "NOTE_DELETE", payload: oldNote});
                 props.setDependencies(true); // to force reload of home page
                 history.push("/");
             })
@@ -117,6 +128,7 @@ const EditNote = (props) => {
                 console.log("ERROR deleting note: " + err);
             });
         }
+        // check if response is handled correctly if user selects "NO" in confirm box
     }
     
     return ( 
