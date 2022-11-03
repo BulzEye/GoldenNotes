@@ -1,50 +1,49 @@
 import Note from "./Note";
 import "./HomeBody.css";
-import { Link, useHistory } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useUserContext } from "../hooks/useUserContext";
+import { Link } from "react-router-dom";
 import { useNotesContext } from "../hooks/useNotesContext";
 
 const HomeBody = (props) => {   
-    const [notes, setNotes] = useState([]);
-    const history = useHistory();
-    const [isLoading, setIsLoading] = useState(true);
-    const { dependencies, setDependencies } = props;
-    const { jwt } = useUserContext();
-    const { notes: notes2, dispatch } = useNotesContext();
+    // const [notes, setNotes] = useState([]);
+    // const history = useHistory();
+    // const [isLoading, setIsLoading] = useState(true);
+    // const { dependencies, setDependencies } = props;
+    // const { jwt } = useUserContext();
+    const { notes: notes2 } = useNotesContext();
 
-    useEffect(() => {
-        const abortContr = new AbortController();
-        // console.log(user);
-        fetch(`${process.env.REACT_APP_API_URL || ""}/getNotes/`, {
-            signal: abortContr.signal,
-            headers: {'Authorization': `Bearer ${jwt}`}
-        })
-            .then(res => {
-                // console.log("Response: " + res);
-                return res.json();
-            })
-            .then(data => {
-                // console.log(data.redirect);
-                // if (data.redirect) {
-                //     history.push(data.redirect);
-                // }
-                // else {
-                    // console.log(data.notes);
-                    setNotes(data.notes);
-                    // dispatch({type: "NOTES_SET", payload: data.notes});
-                    setIsLoading(false);
-                    setDependencies(false);
-                // }
-            })
-            .catch(err => { console.log("ERROR in fetching: " + err); });
+    // useEffect(() => {
+    //     const abortContr = new AbortController();
+    //     // console.log(user);
+    //     fetch(`${process.env.REACT_APP_API_URL || ""}/getNotes/`, {
+    //         signal: abortContr.signal,
+    //         headers: {'Authorization': `Bearer ${jwt}`}
+    //     })
+    //         .then(res => {
+    //             // console.log("Response: " + res);
+    //             return res.json();
+    //         })
+    //         .then(data => {
+    //             // console.log(data.redirect);
+    //             // if (data.redirect) {
+    //             //     history.push(data.redirect);
+    //             // }
+    //             // else {
+    //                 // console.log(data.notes);
+    //                 setNotes(data.notes);
+    //                 // dispatch({type: "NOTES_SET", payload: data.notes});
+    //                 setIsLoading(false);
+    //                 setDependencies(false);
+    //             // }
+    //         })
+    //         .catch(err => { console.log("ERROR in fetching: " + err); });
 
-        return () => {abortContr.abort()};
-            // eslint-disable-next-line
-    }, [dependencies, history]);
+    //     return () => {abortContr.abort()};
+    //         // eslint-disable-next-line
+    // }, [dependencies, history]);
 
     return (
-        (!isLoading) ? <div className="noteBody">
+        // (!isLoading) ? 
+        <div className="noteBody">
             {notes2 && notes2.map((note) => (
                 <Note key={note._id} content={note} />
             ))
@@ -58,7 +57,8 @@ const HomeBody = (props) => {
                     <i className="bi bi-pen"></i>
                 </div>
             </Link>
-        </div> : null
+        </div>
+        //  : null
     );
 }
 

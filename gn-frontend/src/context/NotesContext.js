@@ -42,7 +42,7 @@ export const notesReducer = (state, action) => {
 
 export const NotesContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(notesReducer, { isLoaded: false, notes: [] });
-    const { isLoggedIn, jwt } = useUserContext();
+    const { isLoggedIn, jwt, dispatch: dispatchUser } = useUserContext();
 
     useEffect(() => {
         const abortContr = new AbortController();
@@ -57,7 +57,16 @@ export const NotesContextProvider = ({ children }) => {
                     return res.json();
                 })
                 .then(data => {
-                    dispatch({ type: "NOTES_SET", payload: data.notes });
+                    // console.log(data);
+                    if(!data.error) {
+                        dispatch({ type: "NOTES_SET", payload: data.notes });
+                    }
+                    // else, we have an error
+                    // we can place 'else if' statements to handle other errors (to prevent redirects)
+                    else if(data.error === "JWT has expired. Please log in again") {
+                        // if JWT has expired, log out the user
+                        dispatchUser({type: "USER_LOGOUT"});
+                    }
                 })
                 .catch(err => { console.log("ERROR in fetching: " + err); });
         }

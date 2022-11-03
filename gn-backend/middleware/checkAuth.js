@@ -20,6 +20,10 @@ const checkAuth = async (req, res, next) => {
         next();
     }
     catch(err) {
+        if(err.message === "jwt expired") {
+            console.log("JWT has expired");
+            return res.status(401).json({error: "JWT has expired. Please log in again"});
+        }
         console.log("JWT verification error: " + err.message);
         // user jwt not verified
         return res.status(401).json({error: "Request is not authorized"});
