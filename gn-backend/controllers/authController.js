@@ -23,8 +23,8 @@ const errorHandler = (err) => {
     return errors;
 }
 
-// const maxAge = 30*24*60*60; // 1 month
-const maxAge = 60;
+const maxAge = 30*24*60*60; // 1 month
+// const maxAge = 60;
 const createToken = (id) => {
     return jwt.sign({id}, "BulzEye secret", {
         expiresIn: maxAge
