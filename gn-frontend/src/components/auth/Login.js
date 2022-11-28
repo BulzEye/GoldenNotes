@@ -8,12 +8,15 @@ const Login = (props) => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isProcessing, setIsProcessing] = useState(false);
     const [errors, setErrors] = useState({email: null, password: null});
     const history = useHistory();
     const { dispatch } = useUserContext();
     
     const handleSubmit = (e) => {
         e.preventDefault();
+        setErrors({email: null, password: null});
+        setIsProcessing(true);
         fetch(`${process.env.REACT_APP_API_URL || ""}/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -27,6 +30,7 @@ const Login = (props) => {
             if(resp.errors) {
                 console.log(resp);
                 setErrors(resp.errors);
+                setIsProcessing(false);
             }
             else {
                 console.log("user logged in");
@@ -39,7 +43,6 @@ const Login = (props) => {
             }
 
             // user logged in, no errors
-
         })
         .catch((err) => {
             console.log("ERROR sending login request: " + err);
@@ -61,7 +64,7 @@ const Login = (props) => {
                     </label>
                     <input type="password" name="password" id="loginPass" value={password} onChange={(e) => setPassword(e.target.value)} />
                     {errors.password && <div className="error errorPass">{errors.password}</div>}
-                    <button type="submit">Login</button>
+                    <button type="submit" disabled={isProcessing}>Login</button>
                 </form>
                 <span className="prompt">Don't have an account? <Link to={"/signup"}>Sign up</Link> instead.</span>
             </div>
