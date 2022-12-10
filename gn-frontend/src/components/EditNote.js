@@ -2,18 +2,24 @@ import { useEffect, useRef, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { useNotesContext } from "../hooks/useNotesContext";
 import { useUserContext } from "../hooks/useUserContext";
+import CheckList from "./CheckList";
 import "./EditNote.css";
 
 const EditNote = (props) => {
     
     const { id } = useParams();
+    // state variables
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
+    const [checkboxes, setCheckboxes] = useState([]);
+    const [checked, setChecked] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const history = useHistory();
+    // context
     const { jwt } = useUserContext();
     const { notes, dispatch } = useNotesContext();
     const textBody = useRef(null);
+    // other hooks
+    const history = useHistory();
 
     useEffect(() => {
         if(id) {
@@ -141,7 +147,7 @@ const EditNote = (props) => {
                             <div className="closeNote" onClick={(e) => {e.preventDefault(); history.push("/");}}><i className="bi-x"></i></div>
                             {/* onClick={() => {props.closeFunction(false)}} */}
                         </div>
-                        <div className="modalBody">
+                        {/* <div className="modalBody">
                             <textarea 
                                 name="body" 
                                 id="editBody" 
@@ -153,6 +159,9 @@ const EditNote = (props) => {
                                 onChange={(e) => {setBody(e.target.value); resize(e)}}
                                 onLoad={(e) => {resize(e)}}
                             ></textarea>
+                        </div> */}
+                        <div className="checkContainer unchecked">
+                            <CheckList />
                         </div>
                         <div className="modalBottom">
                             <button onClick={deleteNote} className="delete" title={"Delete note"}><i className="bi bi-trash3"></i></button>

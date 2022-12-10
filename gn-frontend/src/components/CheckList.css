@@ -1,0 +1,55 @@
+div.checkList {
+    /* padding: 5px 10px; */
+    display: flex;
+    align-items: center;
+}
+
+div.checkList:hover button.deleteCheck {
+    visibility: visible;
+}
+
+/* Check Box */
+
+div.checkList .checkBox {
+    padding: 0px 4px;
+    margin: 6px;
+    border-radius: 4px;
+}
+
+div.checkList .checkBox i {
+    font-size: 1.2rem;
+}
+
+div.checkList .checkBox:hover {
+    background-color: #ffbf80;
+    cursor: pointer;
+}
+
+/* List item text */
+
+div.checkList input[type=text] {
+    background-color: #ffd9b3;
+    flex-grow: 1;
+    overflow: auto;
+    display: block;
+    padding: 10px;
+    font-size: 1rem;
+    border: none;
+    font-family: 'Open Sans', serif;
+}
+
+div.checkList input[type=text]:focus {
+    outline: none;
+}
+
+/* List item delete */
+
+div.checkList button.deleteCheck {
+    padding: 5px;
+    margin: 4px;
+    visibility: hidden;
+}
+
+div.checkList button.deleteCheck i {
+    font-size: 1.5rem;
+}

@@ -5,11 +5,10 @@ const noteSchema = new Schema({
     user: {
         type: mongoose.ObjectId
     },
-    title: {
-        type: String,
-        required: true
-    },
-    body: String
+    title: String,
+    body: String,
+    checkboxes: [String],
+    checked: [String]
 }, { timestamps: true });
 
 const Note = mongoose.model("Note", noteSchema);
