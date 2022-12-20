@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
+const { OAuth2Client } = require("google-auth-library");
 
 const errorHandler = (err) => {
     console.log(err);
@@ -54,8 +55,33 @@ module.exports.login_post = (req, res) => {
 module.exports.signup_post = async (req, res) => {
     console.log("Received POST request for signing up");
 
-    const { email, password } = req.body;
-    User.create({email, username: email.substring(0, email.indexOf("@")) , password})
+    let { email, password, googleJwt } = req.body;
+
+    // console.log(googleJwt);
+
+    let username = "";
+
+    if(googleJwt) {
+        const client = new OAuth2Client(process.env.CLIENT_ID);
+        const ticket = await client.verifyIdToken({
+            idToken: googleJwt,
+            audience: process.env.CLIENT_ID
+        });
+        const payload = ticket.getPayload();
+        const userId = payload["sub"];
+        console.log(payload);
+        email = payload.email;
+        username = payload.name;
+        password = payload.sub;
+        
+        // Send error response (FOR TESTING)
+        // res.status(401).send({errors: {google: "Google ERROR", email: "TESTING GOOGLE SIGN UP", password: "HEMLO"}})
+    }
+    else {
+        username = email.substring(0, email.indexOf("@"));
+    }
+
+    User.create({email, username, password})
     .then((user) => {
         // res.status(201).send(user);
         const token = createToken(user._id);

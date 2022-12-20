@@ -19,7 +19,18 @@ div.authPage {
 div.authPage h1 {
     text-align: center;
     margin-top: 0;
-    margin-bottom: 0.6rem;
+    margin-bottom: 1rem;
+}
+
+div.authPage form>div:first-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+div.authPage div.errorGoogle {
+    text-align: center;
 }
 
 div.authPage label {

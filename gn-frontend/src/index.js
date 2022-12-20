@@ -8,16 +8,19 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { CookiesProvider } from "react-cookie";
 import { UserContextProvider } from './context/UserContext';
 import { NotesContextProvider } from './context/NotesContext';
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 ReactDOM.render(
   <React.StrictMode>
     <CookiesProvider>
       <UserContextProvider>
-        <NotesContextProvider>
-          <Router>
-            <App />
-          </Router>
-        </NotesContextProvider>
+        <GoogleOAuthProvider clientId='1059129047651-ooe09kqca9spa6fesepghkueo1o0399f.apps.googleusercontent.com'>
+          <NotesContextProvider>
+            <Router>
+              <App />
+            </Router>
+          </NotesContextProvider>
+        </GoogleOAuthProvider>
       </UserContextProvider>
     </CookiesProvider>
   </React.StrictMode>,

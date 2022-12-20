@@ -5,12 +5,12 @@ export const useSignUp = () => {
     const history = useHistory();
     const { dispatch } = useUserContext();
 
-    const signUp = async (email, password) => {
+    const signUp = async (email, password, googleJwt=null) => {
         try {
             const res = await fetch(`${process.env.REACT_APP_API_URL || ""}/signup`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({ email, password, googleJwt })
             });
             const resp = await res.json();
 
