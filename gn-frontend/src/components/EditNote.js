@@ -12,7 +12,7 @@ const EditNote = (props) => {
     const [isLoading, setIsLoading] = useState(true);
     const history = useHistory();
     const { jwt } = useUserContext();
-    const { notes, dispatch } = useNotesContext();
+    const { dispatch } = useNotesContext();
     const textBody = useRef(null);
 
     useEffect(() => {
