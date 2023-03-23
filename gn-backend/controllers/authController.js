@@ -33,7 +33,7 @@ const createToken = (id) => {
 
 module.exports.login_post = (req, res) => {
     console.log("Received POST request for logging in");
-    console.log(req.body);
+    // console.log(req.body);
 
     User.login(req.body.email, req.body.password)
     .then((user) => {
