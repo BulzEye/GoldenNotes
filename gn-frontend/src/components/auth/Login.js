@@ -1,8 +1,8 @@
 import "./Login.css";
 import "./AuthStyle.css";
 import { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import { useUserContext } from "../../hooks/useUserContext";
+import { Link } from "react-router-dom";
+import { useLogin } from "../../hooks/useLogin";
 
 const Login = (props) => {
 
@@ -10,43 +10,20 @@ const Login = (props) => {
     const [password, setPassword] = useState("");
     const [isProcessing, setIsProcessing] = useState(false);
     const [errors, setErrors] = useState({email: null, password: null});
-    const history = useHistory();
-    const { dispatch } = useUserContext();
+    const { loginUser } = useLogin();
     
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setErrors({email: null, password: null});
         setIsProcessing(true);
-        fetch(`${process.env.REACT_APP_API_URL || ""}/login`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password })
-        })
-        .then((res) => {
-            return res.json();
-        })
-        .then((resp) => {
-            // check for errors
-            if(resp.errors) {
-                console.log(resp);
-                setErrors(resp.errors);
-                setIsProcessing(false);
-            }
-            else {
-                console.log("user logged in");
-                console.log(resp);
-                dispatch({type: "USER_LOGIN", payload: resp});
-                localStorage.setItem("user", JSON.stringify(resp));
-                props.setDependencies(true); // to force reload of home page
-                console.log("Going to home page");
-                history.push("/"); 
-            }
+        
+        const res = await loginUser(email, password);
+        console.log(res);
 
-            // user logged in, no errors
-        })
-        .catch((err) => {
-            console.log("ERROR sending login request: " + err);
-        });
+        if(res) {
+            setErrors(res.errors);
+            setIsProcessing(false);
+        }
     }
     
     return (

@@ -9,13 +9,13 @@ const SignUp = (props) => {
     const [password, setPassword] = useState("");
     const [isProcessing, setIsProcessing] = useState(false);
     const [errors, setErrors] = useState({google: null, email: null, password: null});
-    const { signUp } = useSignUp();
+    const { signUpUser } = useSignUp();
     
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErrors({email: null, password: null});
         setIsProcessing(true);
-        const res = await signUp(email, password);
+        const res = await signUpUser(email, password);
         console.log(res);
 
         // a res is only returned if there are errors
@@ -33,7 +33,7 @@ const SignUp = (props) => {
                     <GoogleLogin 
                         onSuccess={async tokenResponse => {
                             console.log(tokenResponse);
-                            const res = await signUp("", "", tokenResponse.credential);
+                            const res = await signUpUser("", "", tokenResponse.credential);
                             console.log(res);
 
                             // a res is only returned if there are errors

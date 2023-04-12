@@ -5,7 +5,7 @@ export const useSignUp = () => {
     const history = useHistory();
     const { dispatch } = useUserContext();
 
-    const signUp = async (email, password, googleJwt=null) => {
+    const signUpUser = async (email, password, googleJwt=null) => {
         try {
             const res = await fetch(`${process.env.REACT_APP_API_URL || ""}/signup`, {
                 method: "POST",
@@ -35,5 +35,5 @@ export const useSignUp = () => {
         }
     }
 
-    return { signUp };
+    return { signUpUser };
 }
