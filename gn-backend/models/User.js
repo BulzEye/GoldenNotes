@@ -35,16 +35,16 @@ userSchema.statics.login = async function(email, pass, googleJwt=null) {
     if(googleJwt) {
         console.log("Google JWT found");
     }
-    if(user) {
-        const isAuth = await bcrypt.compare(pass, user.password);
-        if(isAuth) {
-            return user;
-        }
-        else {
-            throw Error("Wrong password entered");
-        }
-    }
-    throw Error("User does not exist");
+    // if(user) {
+    //     const isAuth = await bcrypt.compare(pass, user.password);
+    //     if(isAuth) {
+    //         return user;
+    //     }
+    //     else {
+    //         throw Error("Wrong password entered");
+    //     }
+    // }
+    // throw Error("User does not exist");
 }
 
 const User = mongoose.model("User", userSchema);
