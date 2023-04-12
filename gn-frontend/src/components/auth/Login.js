@@ -3,6 +3,7 @@ import "./AuthStyle.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useLogin } from "../../hooks/useLogin";
+import { GoogleLogin } from "@react-oauth/google";
 
 const Login = (props) => {
 
@@ -31,6 +32,24 @@ const Login = (props) => {
             <div className="authPage login">
                 <h1>Login</h1>
                 <form onSubmit={handleSubmit}>
+                    <GoogleLogin 
+                        onSuccess={async tokenResponse => {
+                            console.log(tokenResponse);
+                            const res = await loginUser("", "", tokenResponse.credential);
+                            console.log(res);
+
+                            // a res is only returned if there are errors
+                            if(res) {
+                                setErrors(res);
+                                setIsProcessing(false);
+                            }
+                        }}
+                        onError={() => {
+                            console.log(`ERROR in logging in using Google`);
+                        }}
+                        logo_alignment="center"
+                    />
+                    {errors.google && <div className="error errorGoogle">{errors.google}</div>}
                     <label htmlFor="email">
                         Email
                     </label>

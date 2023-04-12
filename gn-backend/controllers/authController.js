@@ -32,28 +32,48 @@ const createToken = (id) => {
     });
 }
 
-module.exports.login_post = (req, res) => {
+module.exports.login_post = async (req, res) => {
     console.log("Received POST request for logging in");
     console.log(req.body);
 
+    let sub = undefined;
+
     if(req.body.googleJwt) {
         // add special code for dealing with Google auth and JWT
+
+        // Google auth works as follows:
+        // - Most of the login work is handled by Google's servers (no work for us yay)
+        // - It sends a JWT to us (response.credential)
+        // - We make a new OAuth2 client and verify this JWT to make sure it is valid
+        // - After validating, get user details from the payload
+        // - Continue with making a new user as usual, with email and username taken from the payload
+        // - Store the user's unique user ID (the 'sub' field) in the password field. It will be handled separately in the login method.
+        const client = new OAuth2Client(process.env.CLIENT_ID);
+        const ticket = await client.verifyIdToken({
+            idToken: req.body.googleJwt,
+            audience: process.env.CLIENT_ID
+        });
+        const payload = ticket.getPayload();
+        console.log(payload);
+        email = payload.email;
+        username = payload.name;
+        password = payload.sub;
     }
 
-    User.login(req.body.email, req.body.password)
-    .then((user) => {
-        const token = createToken(user._id);
-        res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge*1000 });
-        user._id = undefined;
-        user.password = undefined;
-        res.status(201).send({ jwt: token, user });
-    })
+    User.login(req.body.email, req.body.password, req.body.googleJwt)
+    // .then((user) => {
+    //     const token = createToken(user._id);
+    //     res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge*1000 });
+    //     user._id = undefined;
+    //     user.password = undefined;
+    //     res.status(201).send({ jwt: token, user });
+    // })
     .catch((err) => {
         // console.log(err);
         const errors = errorHandler(err);
         res.status(400).send({errors});
     })
-    // res.send("Received request");
+    res.send("Received request");
 };
 
 module.exports.signup_post = async (req, res) => {
@@ -79,7 +99,6 @@ module.exports.signup_post = async (req, res) => {
             audience: process.env.CLIENT_ID
         });
         const payload = ticket.getPayload();
-        const userId = payload["sub"];
         console.log(payload);
         email = payload.email;
         username = payload.name;

@@ -29,8 +29,12 @@ userSchema.pre("save", async function (next) {
     next();
 });
 
-userSchema.statics.login = async function(email, pass) {
+userSchema.statics.login = async function(email, pass, googleJwt=null) {
     const user = await this.findOne({ email });
+    console.log(googleJwt);
+    if(googleJwt) {
+        console.log("Google JWT found");
+    }
     if(user) {
         const isAuth = await bcrypt.compare(pass, user.password);
         if(isAuth) {
