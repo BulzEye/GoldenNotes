@@ -36,6 +36,10 @@ module.exports.login_post = (req, res) => {
     console.log("Received POST request for logging in");
     console.log(req.body);
 
+    if(req.body.googleJwt) {
+        // add special code for dealing with Google auth and JWT
+    }
+
     User.login(req.body.email, req.body.password)
     .then((user) => {
         const token = createToken(user._id);
@@ -62,6 +66,13 @@ module.exports.signup_post = async (req, res) => {
     let username = "";
 
     if(googleJwt) {
+        // Google auth works as follows:
+        // - Most of the signup work is handled by Google's servers (no work for us yay)
+        // - It sends a JWT to us (response.credential)
+        // - We make a new OAuth2 client and verify this JWT to make sure it is valid
+        // - After validating, get user details from the payload
+        // - Continue with making a new user as usual, with email and username taken from the payload
+        // - Store the user's unique user ID (the 'sub' field) in the password field. It will be handled separately in the login method.
         const client = new OAuth2Client(process.env.CLIENT_ID);
         const ticket = await client.verifyIdToken({
             idToken: googleJwt,
