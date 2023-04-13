@@ -10,12 +10,12 @@ const Login = (props) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isProcessing, setIsProcessing] = useState(false);
-    const [errors, setErrors] = useState({email: null, password: null});
+    const [errors, setErrors] = useState({google: null, email: null, password: null});
     const { loginUser } = useLogin();
     
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setErrors({email: null, password: null});
+        setErrors({google: null, email: null, password: null});
         setIsProcessing(true);
         
         const res = await loginUser(email, password);

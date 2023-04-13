@@ -13,7 +13,7 @@ const SignUp = (props) => {
     
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setErrors({email: null, password: null});
+        setErrors({google: null, email: null, password: null});
         setIsProcessing(true);
         const res = await signUpUser(email, password);
         console.log(res);
