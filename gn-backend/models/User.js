@@ -29,22 +29,37 @@ userSchema.pre("save", async function (next) {
     next();
 });
 
-userSchema.statics.login = async function(email, pass, googleJwt=null) {
+userSchema.statics.login = async function(email, pass, googleSub=null) {
     const user = await this.findOne({ email });
-    console.log(googleJwt);
-    if(googleJwt) {
+    console.log(googleSub);
+    if(googleSub) {
         console.log("Google JWT found");
+        console.log(user);
+        if(user) {
+            if(user.password == googleSub) {
+                return user;
+            }
+            else {
+                // user already registered with Google email
+                throw Error("Google Error: User already registered with this Gmail address. Use regular login");
+            }
+        }
+        else {
+            throw Error("Google Error: User does not exist. Sign up instead.")
+        }
     }
-    // if(user) {
-    //     const isAuth = await bcrypt.compare(pass, user.password);
-    //     if(isAuth) {
-    //         return user;
-    //     }
-    //     else {
-    //         throw Error("Wrong password entered");
-    //     }
-    // }
-    // throw Error("User does not exist");
+    else {
+        if(user) {
+            const isAuth = await bcrypt.compare(pass, user.password);
+            if(isAuth) {
+                return user;
+            }
+            else {
+                throw Error("Wrong password entered");
+            }
+        }
+        throw Error("User does not exist");
+    }
 }
 
 const User = mongoose.model("User", userSchema);

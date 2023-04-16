@@ -4,7 +4,7 @@ const { OAuth2Client } = require("google-auth-library");
 
 const errorHandler = (err) => {
     console.log(err);
-    let errors = {email: "", password: ""};
+    let errors = {google: "", email: "", password: ""};
     if(err.code === 11000) {
         errors.email = "This email is already registered. Log in instead.";
         return errors
@@ -21,6 +21,10 @@ const errorHandler = (err) => {
     if(err.message === "Wrong password entered") {
         errors.password = err.message;
     }
+    if(err.message.includes("Google Error: ")) {
+        // console.log(err.message.split(": ")[1]);
+        errors.google = err.message.split(": ")[1];
+    }
     return errors;
 }
 
@@ -36,9 +40,12 @@ module.exports.login_post = async (req, res) => {
     console.log("Received POST request for logging in");
     console.log(req.body);
 
-    let sub = undefined;
+    let {email, password, googleJwt} = req.body;
 
-    if(req.body.googleJwt) {
+    let sub = null;
+
+    // TODO: add error handling for Google token verification errors (using try catch)
+    if(googleJwt) {
         // add special code for dealing with Google auth and JWT
 
         // Google auth works as follows:
@@ -50,41 +57,43 @@ module.exports.login_post = async (req, res) => {
         // - Store the user's unique user ID (the 'sub' field) in the password field. It will be handled separately in the login method.
         const client = new OAuth2Client(process.env.CLIENT_ID);
         const ticket = await client.verifyIdToken({
-            idToken: req.body.googleJwt,
+            idToken: googleJwt,
             audience: process.env.CLIENT_ID
         });
         const payload = ticket.getPayload();
         console.log(payload);
-        email = payload.email;
-        username = payload.name;
-        password = payload.sub;
+        sub = payload.sub;
     }
 
-    User.login(req.body.email, req.body.password, req.body.googleJwt)
-    // .then((user) => {
-    //     const token = createToken(user._id);
-    //     res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge*1000 });
-    //     user._id = undefined;
-    //     user.password = undefined;
-    //     res.status(201).send({ jwt: token, user });
-    // })
+    User.login(email, password, sub)
+    .then((user) => {
+        const token = createToken(user._id);
+        res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge*1000 }); // make cookie for jwt token - not used for React app
+
+        // remove _id and password fields from user object before sending to client (make sure these are not exposed to frontend!)
+        user._id = undefined;
+        user.password = undefined;
+
+        res.status(201).send({ jwt: token, user });
+    })
     .catch((err) => {
         // console.log(err);
         const errors = errorHandler(err);
         res.status(400).send({errors});
     })
-    res.send("Received request");
+    // res.send("Received request");
 };
 
 module.exports.signup_post = async (req, res) => {
     console.log("Received POST request for signing up");
-
+    
     let { email, password, googleJwt } = req.body;
-
+    
     // console.log(googleJwt);
-
+    
     let username = "";
-
+    
+    // TODO: add error handling to Google token verification errors (using try catch)
     if(googleJwt) {
         // Google auth works as follows:
         // - Most of the signup work is handled by Google's servers (no work for us yay)
@@ -110,12 +119,14 @@ module.exports.signup_post = async (req, res) => {
     else {
         username = email.substring(0, email.indexOf("@"));
     }
-
+    
     User.create({email, username, password})
     .then((user) => {
         // res.status(201).send(user);
         const token = createToken(user._id);
-        res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge*1000 });
+        res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge*1000 }); // make cookie for jwt token - not used for React app
+
+        // remove _id and password fields from user object before sending to client
         user._id = undefined;
         user.password = undefined;
         res.status(201).send({ jwt: token, user });
