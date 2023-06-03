@@ -2,7 +2,9 @@ import { useState } from "react";
 import "./CheckList.css";
 
 const CheckList = (props) => {
-    const [checked, setChecked] = useState(false);
+    console.log(props);
+    const [checked, setChecked] = useState(props.checked);
+    const [content, setContent] = useState(props.content);
 
     const deleteItem = (e) => {
         e.preventDefault();
@@ -18,7 +20,7 @@ const CheckList = (props) => {
                     <i className="bi bi-square"></i>
                 }
             </div>
-            <input type="text" name="checkValue" id="val" autoComplete="off" />
+            <input type="text" name="checkValue" id="val" autoComplete="off" value={content} onInput={(e) => setContent(e.target.value)} />
             <button className="deleteCheck" onClick={deleteItem}><i className="bi-x"></i></button>
         </div>
     );

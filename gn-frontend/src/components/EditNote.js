@@ -6,13 +6,24 @@ import CheckList from "./CheckList";
 import "./EditNote.css";
 
 const EditNote = (props) => {
+
+    let sampleCheckboxes = [
+        {
+            checked: false,
+            content: "Hello World!"
+        },
+        {
+            checked: false,
+            content: "Note 2"
+        }
+    ];
     
     const { id } = useParams();
     // state variables
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
-    const [checkboxes, setCheckboxes] = useState([]);
-    const [checked, setChecked] = useState([]);
+    const [checkboxes, setCheckboxes] = useState(sampleCheckboxes);
+    // const [checked, setChecked] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     // context
     const { jwt } = useUserContext();
@@ -161,7 +172,12 @@ const EditNote = (props) => {
                             ></textarea>
                         </div> */}
                         <div className="checkContainer unchecked">
-                            <CheckList />
+                            {
+                                checkboxes && checkboxes.map((checkbox, index, array) => (
+                                    <CheckList key={index} index={index} checked={checkbox.checked} content={checkbox.content} />
+                                ))
+                            }
+                            {/* <CheckList /> */}
                         </div>
                         <div className="modalBottom">
                             <button onClick={deleteNote} className="delete" title={"Delete note"}><i className="bi bi-trash3"></i></button>
