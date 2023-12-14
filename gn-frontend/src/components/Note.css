@@ -46,6 +46,11 @@ div.note {
 
 div.note p {
     white-space: pre-wrap;
+    display: -moz-box;
+    display: -webkit-box;
+    -webkit-line-clamp: 15;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 div.note:hover {
