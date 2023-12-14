@@ -127,7 +127,7 @@ div.modalBody textarea {
     resize: none;
     width: 100%;
     overflow: auto;
-    /* min-height: 11vh; */
+    min-height: 11vh;
     max-height: 60vh;
     display: block;
     margin: 0px 0px 15px;
